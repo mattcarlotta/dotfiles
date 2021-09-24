@@ -12,6 +12,9 @@ Plug 'ayu-theme/ayu-vim'
 " Completion framework
 Plug 'hrsh7th/nvim-compe'
 
+" File marker
+Plug 'ThePrimeagen/harpoon'
+
 " Fuzzy finder
 Plug 'nvim-lua/popup.nvim'
 Plug 'nvim-lua/plenary.nvim'

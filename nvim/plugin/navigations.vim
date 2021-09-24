@@ -17,8 +17,8 @@ nnoremap <leader>l <C-w>l<CR>
 " Search navigations
 nnoremap <leader>ps :Sex<CR>
 nnoremap <leader>pv :Vex!<CR><C-w>=
+nnoremap <leader>pe :Ex<CR>
 nnoremap <silent> <C-n> :silent !tmux neww tmux-sessionizer<CR>
-nnoremap <C-p> :GFiles<CR>
 nnoremap <leader>d <cmd>Telescope live_grep<cr>
 nnoremap <leader>pf :Files<CR>
 

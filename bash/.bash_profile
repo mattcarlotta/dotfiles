@@ -28,7 +28,7 @@ alias ...='cd ../../'                                                           
 alias c='clear'                                                                                     # c:            Clear terminal display
 alias cdd="cd ~/Documents"                                                                          # cdd:          Change directory in Documents
 alias bp='nvim ~/.bash_profile'                                                                     # bp:           Access bash profile
-alias bback='cat ~/.bash_profile > ~/Documents/.dotfiles/bash/.bash_profile'                        # bback:        Backup bash profile
+alias bback='cat ~/.bash_profile > ~/Documents/dotfiles/bash/.bash_profile'                         # bback:        Backup bash profile
 alias sp='source ~/.bash_profile'                                                                   # sp:           Sources bash profile
 alias pg='psql -U postgres'                                                                         # pg:           Connects to postgreSQL
 alias initDB='psql -U postgres -f'                                                                  # initsql:      Initializes a specified SQL database
@@ -71,7 +71,7 @@ alias cclp='cargo clippy'                                                       
 alias vinit='nvim ~/.config/nvim/init.vim'                                                          # vinit:        Edit vim init
 alias v.="nvim ."                                                                                   # v.            Open vim in current directory
 alias vim="nvim"                                                                                    # vim:          Nvim alias
-alias vback='cp -r ~/.config/nvim ~/Documents/.dotfiles/; echo Backed up dot files'                 # vback:        Backup vim to ~/Documents/.dotfiles
+alias vback='cp -r ~/.config/nvim ~/Documents/dotfiles/; echo Backed up dot files'                  # vback:        Backup vim to ~/Documents/.dotfiles
 
 alias t='tmux'                                                                                      # t:            Runs tmux
 alias ta='tmux a'                                                                                   # ta:           Runs tmux attach
