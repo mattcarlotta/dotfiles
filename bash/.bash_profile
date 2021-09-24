@@ -36,7 +36,7 @@ alias pia='/opt/pia/run.sh --startup'                                           
 alias c.='code .'                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                      # e:            Exit terminal
 alias bh='searchbashhistory'                                                                        # bh:           Searches bash history using fzf
-alias ls='ls -AGFh'                                                                                 # ls:           List all files in current directory
+alias ls='ls -AGFh --color=auto'                                                                    # ls:           List all files in current directory
 
 alias ga='git add .'                                                                                # ga:           Tracks new files for git
 alias gc='git commit -am'                                                                           # gc:           Commits new files for git
