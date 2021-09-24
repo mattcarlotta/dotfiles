@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+selected=$(cat ~/.bash_history | sort | uniq | less | fzf)
+
+if [[ ! -z $selected ]]; then
+    echo "$selected"
+    echo "$selected" | xclip -selection c
+else
+    exit 0
+fi
