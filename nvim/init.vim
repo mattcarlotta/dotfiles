@@ -12,6 +12,10 @@ Plug 'ayu-theme/ayu-vim'
 " Completion framework
 Plug 'hrsh7th/nvim-compe'
 
+" Syntax highlighting
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+Plug 'p00f/nvim-ts-rainbow'
+
 " File marker
 Plug 'ThePrimeagen/harpoon'
 
