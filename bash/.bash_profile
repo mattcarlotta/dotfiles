@@ -18,8 +18,8 @@ function searchbashhistory() {
     local selectionslice=$(echo "$selection" | cut -c 1-40)
     if [[ ! -z $selection ]]; then
         if [ $selectionlength -gt 40 ]; then
-            local additonalchars=$(expr $selectionlength - 40)
-            selectionslice=$(echo "${selectionslice}... +${additonalchars} characters") 
+            local additionalchars=$(expr $selectionlength - 40)
+            selectionslice=$(echo "${selectionslice}... +${additionalchars} characters") 
         fi
         echo "$selection" | xclip -selection c
         echo -e "✨ Copied \033[35;1m$selectionslice\033[m to the clipboard! ✨"
