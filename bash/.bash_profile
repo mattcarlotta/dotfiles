@@ -1,4 +1,4 @@
-checkgitstatus() {
+function checkgitstatus() {
     local gitbranch=""
     if [ -d "$PWD/.git" ]; then
         local branchstatus=""
@@ -10,6 +10,20 @@ checkgitstatus() {
         gitbranch="🌿 \[\033[32m\][git:$branch]$branchstatus"
     fi
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
+}
+
+function searchbashhistory() {
+    local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | sort -rn | fzf | sed 's/^[[:space:]]*//')
+    local selectionlength=$(expr length "$selection")
+    local selectionslice=$(echo "$selection" | cut -c 1-40)
+    if [[ ! -z $selection ]]; then
+        if [ $selectionlength -gt 40 ]; then
+            local additonalchars=$(expr $selectionlength - 40)
+            selectionslice=$(echo "${selectionslice}... +${additonalchars} characters") 
+        fi
+        echo "$selection" | xclip -selection c
+        echo -e "✨ Copied \033[35;1m$selectionslice\033[m to the clipboard! ✨"
+    fi   
 }
 
 
@@ -30,7 +44,7 @@ alias initDB='psql -U postgres -f'                                              
 alias pia='/opt/pia/run.sh --startup'                                                                               # pia:          Start PIA client 
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
-alias bh='history 2>&1 | sort -rn | fzf'                                                                            # bh:           Searches bash history using fzf
+alias sbh=searchbashhistory                                                                                         # sbh:          Searches bash history using fzf
 alias ls='ls -AGFh --color=auto'                                                                                    # ls:           List all files in current directory
 
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
