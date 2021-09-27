@@ -1,17 +1,40 @@
+# Parses the parent directory within Documents
+function getparentdir() {
+    local docs=~/Documents
+    local alldirs=(${PWD//$docs/ })
+    local subdirs=(${alldirs//\// })
+    local parentdir=${subdirs[0]}
+    if [ -z $parentdir ]; then
+        parentdir=$docs
+    else 
+        parentdir=$docs/$parentdir
+    fi
+
+    echo $parentdir
+}
+
+# Displays git status if a parent folder in Documents is tracked
 function checkgitstatus() {
+    local parentdir=$(getparentdir)
     local gitbranch=""
-    if [ -d "$PWD/.git" ]; then
+    if [ -d "$parentdir/.git" ]; then
         local branchstatus=""
         local branch=$(git branch 2>&1 | grep -e "*" | cut -c3-)
         local status=$(git status 2>&1 | grep -e "Changes not staged" -e "Untracked files")
+        local staged=$(git status 2>&1 | grep -e "Changes to be committed")
         if [ ! -z "$status" ]; then
             branchstatus=" 🔴 \[\033[91m\][unstaged]"
         fi
+        if [ ! -z "$staged" ]; then
+            branchstatus=" 🟣 \[\033[95m\][staged]"
+        fi
         gitbranch="🌿 \[\033[32m\][git:$branch]$branchstatus"
     fi
+
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
 }
 
+# Fuzzy finder for searching through bash history and copying selection to the clipboard
 function searchbashhistory() {
     local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | sort -rn | fzf | sed 's/^[[:space:]]*//')
     local selectionlength=$(expr length "$selection")
