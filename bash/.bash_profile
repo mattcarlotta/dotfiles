@@ -96,6 +96,7 @@ alias noshot='ssh-add ~/.ssh/id_ed25519'                                        
 alias matt='ssh-add ~/.ssh/id_rsa'                                                                                  # matt:         SSH with matt
 
 alias crun='cargo run'                                                                                              # crun:         Cargo run
+alias cbld='cargo build --release'                                                                                  # cbld:         Cargo build
 alias crel='cargo run --release'                                                                                    # crel:         Cargo run with release
 alias cwat='cargo watch -x run'                                                                                     # cwat:         Cargo watch
 alias cclp='cargo clippy'                                                                                           # cclp:         Cargo clippy
