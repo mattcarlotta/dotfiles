@@ -73,7 +73,7 @@ alias initDB='psql -U postgres -f'                                              
 alias pia='/opt/pia/run.sh --startup'                                                                               # pia:          Start PIA client 
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
-alias sbh=search_bash_history                                                                                         # sbh:          Searches bash history using fzf
+alias sbh=search_bash_history                                                                                       # sbh:          Searches bash history using fzf
 alias ls='ls -AGFh --color=auto'                                                                                    # ls:           List all files in current directory
 
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
@@ -88,6 +88,12 @@ alias gpsh='git push origin'                                                    
 alias gs='git status'                                                                                               # gs:           Displays status of git tracking
 alias gclr='git clean -f -d'                                                                                        # gclr:         Remove untracked git files
 alias gt='git ls-files | xargs -I{} git log -1 --format="%ai {}" {}'                                                # gt:           Displays tracked files
+
+alias nga='sudo nvim /etc/nginx/sites-available/mattcarlotta.sh'                                                    # nga:          Edit app nginx config
+alias ngi='sudo nvim /etc/nginx/sites-available/static.mattcarlotta.sh'                                             # ngi:          Edit static images nginx config
+alias ngt='sudo nginx -t'                                                                                           # ngt:          Test nginx configs
+alias ngres='sudo systemctl restart nginx'                                                                          # ngres:        Restart nginx
+alias ngrel='sudo systemctl reload nginx'                                                                           # ngrel:        Reload nginx
 
 alias y='yarn'                                                                                                      # y:            Run yarn install
 alias ya='yarn add'                                                                                                 # ya:           Add dependency to project
