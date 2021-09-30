@@ -1,5 +1,5 @@
 # Parses the parent directories of the current working directory to determine if any are git tracked
-function getparentdir() {
+function dir_is_tracked() {
     IFS='\/'
     read -ra CWD<<< "$PWD"
     IFS=''
@@ -18,20 +18,22 @@ function getparentdir() {
 }
 
 # Displays the status of a git branch if a parent folder is git tracked
-function checkgitstatus() {
-    local gittracked=$(getparentdir)
+function check_git_status() {
     local gitbranch=""
-    if [ $gittracked ]; then
+    if $(dir_is_tracked); then
         local branchstatus=""
-        local branch=$(git branch 2>&1 | grep -e "*" | cut -c3-)
-        local status=$(git status 2>&1 | grep -e "Changes not staged" -e "Untracked files")
-        local staged=$(git status 2>&1 | grep -e "Changes to be committed")
+
+        local status=$(git status | grep -e "Changes not staged" -e "Untracked files")
         if [ ! -z "$status" ]; then
             branchstatus=" 🔴 \[\033[91m\][unstaged]"
         fi
+
+        local staged=$(git status | grep -e "Changes to be committed")
         if [ ! -z "$staged" ]; then
             branchstatus=" 🟣 \[\033[95m\][staged]"
         fi
+
+        local branch=$(git branch | grep -e "*" | cut -c3-)
         gitbranch="🌿 \[\033[32m\][git:$branch]$branchstatus"
     fi
 
@@ -39,7 +41,7 @@ function checkgitstatus() {
 }
 
 # Fuzzy finder for searching through bash history and copying selection to the clipboard
-function searchbashhistory() {
+function search_bash_history() {
     local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | sort -rn | fzf | sed 's/^[[:space:]]*//')
     local selectionlength=$(expr length "$selection")
     local selectionslice=$(echo "$selection" | cut -c 1-40)
@@ -54,7 +56,7 @@ function searchbashhistory() {
 }
 
 
-PROMPT_COMMAND=checkgitstatus
+PROMPT_COMMAND=check_git_status
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
@@ -71,7 +73,7 @@ alias initDB='psql -U postgres -f'                                              
 alias pia='/opt/pia/run.sh --startup'                                                                               # pia:          Start PIA client 
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
-alias sbh=searchbashhistory                                                                                         # sbh:          Searches bash history using fzf
+alias sbh=search_bash_history                                                                                         # sbh:          Searches bash history using fzf
 alias ls='ls -AGFh --color=auto'                                                                                    # ls:           List all files in current directory
 
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
