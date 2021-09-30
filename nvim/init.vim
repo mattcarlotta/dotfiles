@@ -32,6 +32,7 @@ Plug 'glepnir/lspsaga.nvim'
 
 " Rust tools
 Plug 'rust-lang/rust.vim'
+Plug 'simrat39/rust-tools.nvim'
 
 " Format on save
 Plug 'sbdchd/neoformat'

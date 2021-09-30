@@ -1,22 +1,36 @@
 " autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
-" Code navigation shortcuts
-" as found in :help lsp
-nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gS <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> 1gD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
+" LSP Code navigation shortcuts
+"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gS    <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> ggD   <cmd>lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gtd    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gb    <cmd>lua vim.lsp.buf.references()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+"nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 
-" Quick-fix
-nnoremap <silent> ga    <cmd>lua vim.lsp.buf.code_action()<CR>
-
-" Goto previous/next diagnostic warning/error
-nnoremap <silent> <F8> <cmd>lua vim.lsp.diagnostic.goto_prev()<CR>
-nnoremap <silent> <F9> <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
+" LSP Saga Actions
+" render hover doc
+nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+" scroll down hover doc or scroll in definition preview
+nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+" scroll up hover doc
+nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+" find cursor word definition and reference
+nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
+" signature help
+nnoremap <silent> gw <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+" code actions
+nnoremap <silent><leader>gt <cmd>lua require('lspsaga.codeaction').code_action()<CR>
+vnoremap <silent><leader>gt :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
+" preview definition
+nnoremap <silent> gd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+" rename definition
+nnoremap <silent> gr <cmd>lua require('lspsaga.rename').rename()<CR>
+" jump diagnostic
+nnoremap <silent> <F8> <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
+nnoremap <silent> <F9> <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
 
 lua << EOF
 local nvim_lsp = require('lspconfig')
@@ -24,32 +38,19 @@ local nvim_lsp = require('lspconfig')
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 capabilities.textDocument.completion.completionItem.resolveSupport = {
-  properties = {
-    'documentation',
-    'detail',
-    'additionalTextEdits',
-  }
+    properties = {
+        'documentation',
+        'detail',
+        'additionalTextEdits',
+    }
 }
 
--- Enable rust_analyzer
-nvim_lsp.rust_analyzer.setup({
-    capabilities=capabilities,
-    -- on_attach is a callback called when the language server attachs to the buffer
-    -- on_attach = on_attach,
-    settings = {
-      -- to enable rust-analyzer settings visit:
-      -- https://github.com/rust-analyzer/rust-analyzer/blob/master/docs/user/generated_config.adoc
-      ["rust-analyzer"] = {
-        -- enable clippy diagnostics on save
-        checkOnSave = {
-            command = "clippy"
-        },
-        inlayHints = {
-            typeHints = true,
-            parameterHints = false,
-            chainingHints = false
+require('rust-tools').setup({
+    tools = {
+        inlay_hints = {
+            parameter_hints_prefix = " ",
+            other_hints_prefix = " ",
         }
-      }
     }
 })
 
@@ -75,56 +76,58 @@ require'lspconfig'.diagnosticls.setup {
                 args = {
                     '--stdin', '--stdin-filename', '%filepath', '--format',
                     'json'
-                },
+                    },
                 sourceName = 'eslint_d',
                 parseJson = {
                     errorsRoot = '[0].messages',
                     line = 'line',
                     column = 'column',
-                    endLine = 'endLine',
-                    endColumn = 'endColumn',
-                    message = '[eslint] ${message} [${ruleId}]',
-                    security = 'severity'
-                },
-                securities = {
-                    [2] = 'error',
-                    [1] = 'warning'
-                }
-            }
-        },
-        filetypes = {
-            javascript = 'eslint',
-            javascriptreact = 'eslint',
-            typescript = 'eslint',
-            typescriptreact = 'eslint'
-        },
-        formatters = {
-            eslint_d = {
-                command = 'eslint_d',
-                args = {
-                    '--stdin', '--stdin-filename', '%filename',
-                    '--fix-to-stdout'
-                },
-                rootPatterns = {'.git'}
+                endLine = 'endLine',
+            endColumn = 'endColumn',
+            message = '[eslint] ${message} [${ruleId}]',
+            security = 'severity'
             },
-            prettier = {
-                command = 'prettier',
-                args = {'--stdin-filepath', '%filename'}
+        securities = {
+            [2] = 'error',
+            [1] = 'warning'
             }
+        }
+    },
+    filetypes = {
+        javascript = 'eslint',
+        javascriptreact = 'eslint',
+        typescript = 'eslint',
+        typescriptreact = 'eslint'
+    },
+    formatters = {
+        eslint_d = {
+            command = 'eslint_d',
+            args = {
+                '--stdin', '--stdin-filename', '%filename',
+                '--fix-to-stdout'
+            },
+            rootPatterns = {'.git'}
         },
-        formatFiletypes = {
-            css = 'prettier',
-            javascript = 'eslint_d',
-            javascriptreact = 'eslint_d',
-            json = 'prettier',
-            scss = 'prettier',
-            less = 'prettier',
-            typescript = 'eslint_d',
-            typescriptreact = 'eslint_d',
-            markdown = 'prettier'
+        prettier = {
+            command = 'prettier',
+            args = {'--stdin-filepath', '%filename'}
+        }
+    },
+    formatFiletypes = {
+        css = 'prettier',
+        javascript = 'eslint_d',
+        javascriptreact = 'eslint_d',
+        json = 'prettier',
+        scss = 'prettier',
+        less = 'prettier',
+        typescript = 'eslint_d',
+        typescriptreact = 'eslint_d',
+        markdown = 'prettier'
         }
     }
 }
+
+
 --vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
 --  vim.lsp.diagnostic.on_publish_diagnostics, {
 --    virtual_text = false,
@@ -136,4 +139,4 @@ EOF
 
 " Enable type inlay hints
 autocmd CursorMoved,InsertLeave,BufEnter,BufWinEnter,TabEnter,BufWritePost *
-\ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
+            \ lua require'lsp_extensions'.inlay_hints{ prefix = '', highlight = "Comment", enabled = {"TypeHint", "ChainingHint", "ParameterHint"} }
