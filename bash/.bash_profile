@@ -1,23 +1,27 @@
-# Parses the parent directory within Documents
+# Parses the parent directories of the current working directory to determine if any are git tracked
 function getparentdir() {
-    local docs=~/Documents
-    local alldirs=(${PWD//$docs/ })
-    local subdirs=(${alldirs//\// })
-    local parentdir=${subdirs[0]}
-    if [ -z $parentdir ]; then
-        parentdir=$docs
-    else 
-        parentdir=$docs/$parentdir
-    fi
+    IFS='\/'
+    read -ra CWD<<< "$PWD"
+    IFS=''
 
-    echo $parentdir
+    local parentdir=""
+    local gittracked=false
+    for dir in "${CWD[@]}"; do
+        parentdir+=$dir/
+        if [ -d "$parentdir/.git" ]; then
+            gittracked=true
+            break;
+        fi
+    done
+
+    echo $gittracked
 }
 
-# Displays git status if a parent folder in Documents is tracked
+# Displays the status of a git branch if a parent folder is git tracked
 function checkgitstatus() {
-    local parentdir=$(getparentdir)
+    local gittracked=$(getparentdir)
     local gitbranch=""
-    if [ -d "$parentdir/.git" ]; then
+    if [ $gittracked ]; then
         local branchstatus=""
         local branch=$(git branch 2>&1 | grep -e "*" | cut -c3-)
         local status=$(git status 2>&1 | grep -e "Changes not staged" -e "Untracked files")
