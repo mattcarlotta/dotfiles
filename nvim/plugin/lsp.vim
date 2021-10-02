@@ -1,38 +1,38 @@
 " autocmd CursorHold * lua vim.lsp.diagnostic.show_line_diagnostics()
 
 " LSP Code navigation shortcuts
-"nnoremap <silent> K     <cmd>lua vim.lsp.buf.hover()<CR>
-"nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
-nnoremap <silent> gS    <cmd>lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> ggD   <cmd>lua vim.lsp.buf.type_definition()<CR>
-nnoremap <silent> gtd    <cmd>lua vim.lsp.buf.definition()<CR>
-nnoremap <silent> gb    <cmd>lua vim.lsp.buf.references()<CR>
-"nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
-"nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+"nnoremap <silent> K     :lua vim.lsp.buf.hover()<CR>
+"nnoremap <silent> gD    :lua vim.lsp.buf.implementation()<CR>
+nnoremap <silent> gS    :lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> ggD   :lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gtd   :lua vim.lsp.buf.definition()<CR>
+nnoremap <silent> gb    :lua vim.lsp.buf.references()<CR>
+"nnoremap <silent> g0    :lua vim.lsp.buf.document_symbol()<CR>
+"nnoremap <silent> gW    :lua vim.lsp.buf.workspace_symbol()<CR>
 
 " LSP Saga Actions
 " render hover doc
-nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+nnoremap <silent> K :lua require('lspsaga.hover').render_hover_doc()<CR>
 " show line hints
-nnoremap <silent> D <cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
+nnoremap <silent> D :lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
 " scroll down hover doc or scroll in definition preview
-nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
+nnoremap <silent> <C-f> :lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
 " scroll up hover doc
-nnoremap <silent> <C-b> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
+nnoremap <silent> <C-b> :lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>
 " find cursor word definition and reference
-nnoremap <silent> gh <cmd>lua require'lspsaga.provider'.lsp_finder()<CR>
+nnoremap <silent> gh :lua require'lspsaga.provider'.lsp_finder()<CR>
 " signature help
-nnoremap <silent> gw <cmd>lua require('lspsaga.signaturehelp').signature_help()<CR>
+nnoremap <silent> gw :lua require('lspsaga.signaturehelp').signature_help()<CR>
 " code actions
-nnoremap <silent><leader>gt <cmd>lua require('lspsaga.codeaction').code_action()<CR>
+nnoremap <silent><leader>gt :lua require('lspsaga.codeaction').code_action()<CR>
 vnoremap <silent><leader>gt :<C-U>lua require('lspsaga.codeaction').range_code_action()<CR>
 " preview definition
-nnoremap <silent> gd <cmd>lua require'lspsaga.provider'.preview_definition()<CR>
+nnoremap <silent> gd :lua require'lspsaga.provider'.preview_definition()<CR>
 " rename definition
-nnoremap <silent> gr <cmd>lua require('lspsaga.rename').rename()<CR>
+nnoremap <silent> gr :lua require('lspsaga.rename').rename()<CR>
 " jump diagnostic
-nnoremap <silent> <F8> <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
-nnoremap <silent> <F9> <cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
+nnoremap <silent> <F8> :lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>
+nnoremap <silent> <F9> :lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>
 
 lua << EOF
 local nvim_lsp = require('lspconfig')
