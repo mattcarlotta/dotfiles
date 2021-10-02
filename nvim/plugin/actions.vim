@@ -8,6 +8,7 @@ nnoremap <leader>ins :PlugInstall<CR>
 nnoremap <leader>cx :!chmod +x %<CR>
 nnoremap <leader>+ :vertical resize +5<CR>
 nnoremap <leader>- :vertical resize -5<CR>
+nnoremap <C-y> :%s/
 
 noremap <leader>p "_dP
 vnoremap <leader>y "+y
