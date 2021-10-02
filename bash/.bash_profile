@@ -50,8 +50,8 @@ function search_bash_history() {
             local additionalchars=$(expr $selectionlength - 40)
             selectionslice=$(echo "${selectionslice}... +${additionalchars} characters") 
         fi
-        echo "$selection" | xclip -selection c
-        echo -e "✨ Copied \033[35;1m$selectionslice\033[m to the clipboard! ✨"
+        echo -e "✨ Invoked \033[35;1m$selectionslice\033[m! ✨"
+        eval "$selection"
     fi   
 }
 
@@ -70,6 +70,7 @@ alias bback='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Ba
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
 alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
 alias initDB='psql -U postgres -f'                                                                                  # initsql:      Initializes a specified SQL database
+alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
 alias sbh=search_bash_history                                                                                       # sbh:          Searches bash history using fzf
 alias ls='ls -AGFh --color=auto'                                                                                    # ls:           List all files in current directory
@@ -121,7 +122,7 @@ alias ta='tmux a'                                                               
 alias tk='tmux kill-server'                                                                                         # tk:           Kills tmux server
 alias tw='tmux neww'                                                                                                # tw:           New window
 alias twn='tmux neww -n'                                                                                            # twn:          New named window
-alias twdc='tmux nnew -d -c'                                                                                        # twdc:          New window at directory
+alias twdc='tmux nnew -d -c'                                                                                        # twdc:         New window at directory
 alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions 
 alias ts='tmux-sessionizer'                                                                                         # f:            Runs tmux-sessioner script
 alias tconf='nvim ~/.tmux.conf'                                                                                     # tconf:        Edit tmux config
