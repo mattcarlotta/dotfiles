@@ -13,6 +13,8 @@ nnoremap <silent> gb    <cmd>lua vim.lsp.buf.references()<CR>
 " LSP Saga Actions
 " render hover doc
 nnoremap <silent> K <cmd>lua require('lspsaga.hover').render_hover_doc()<CR>
+" show line hints
+nnoremap <silent> D <cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>
 " scroll down hover doc or scroll in definition preview
 nnoremap <silent> <C-f> <cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>
 " scroll up hover doc
