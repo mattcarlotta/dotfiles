@@ -2,6 +2,7 @@
 nnoremap <leader>q :q<CR>
 nnoremap <leader>fq :q!<CR>
 nnoremap <leader>w :w<CR>
+nnoremap <leader>rq :wq<CR>
 nnoremap <leader><CR> :so ~/.config/nvim/init.vim<CR>
 nnoremap <leader>ins :PlugInstall<CR>
 nnoremap <leader>cx :!chmod +x %<CR>
