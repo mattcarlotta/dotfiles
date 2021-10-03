@@ -17,24 +17,30 @@ function dir_is_tracked() {
     echo $gittracked
 }
 
+# Displays the file status of a git branch 
+function check_branch_status() {
+    local gitstatus=$(git status)
+    local unstaged=$(echo $gitstatus | grep -e "Changes not staged" -e "Untracked files")
+    local staged=$(echo $gitstatus | grep -e "Changes to be committed")
+
+    if [ ! -z "$unstaged" ]; then
+        echo " 🔴 \[\033[91m\][branch:unstaged]"
+    elif [ ! -z "$staged" ]; then
+        echo " 🟣 \[\033[95m\][branch:staged]"
+    else
+        echo " 🌱 \[\033[32m\][branch:current($(git rev-parse --short HEAD))]"
+    fi
+}
+
 # Displays the status of a git branch if a parent folder is git tracked
 function check_git_status() {
     local gitbranch=""
     if $(dir_is_tracked); then
-        local branchstatus=""
+        local gitstatus=$(git status)
+        local gitbranchstatus=$(check_branch_status)
+        local checkedoutbranch=$(git branch | grep -e "*" | cut -c3-)
 
-        local status=$(git status | grep -e "Changes not staged" -e "Untracked files")
-        if [ ! -z "$status" ]; then
-            branchstatus=" 🔴 \[\033[91m\][unstaged]"
-        fi
-
-        local staged=$(git status | grep -e "Changes to be committed")
-        if [ ! -z "$staged" ]; then
-            branchstatus=" 🟣 \[\033[95m\][staged]"
-        fi
-
-        local branch=$(git branch | grep -e "*" | cut -c3-)
-        gitbranch="🌿 \[\033[32m\][git:$branch]$branchstatus"
+        gitbranch="🌿 \[\033[32m\][git:$checkedoutbranch]$gitbranchstatus"
     fi
 
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
@@ -42,15 +48,13 @@ function check_git_status() {
 
 # Fuzzy finder for searching through bash history and copying selection to the clipboard
 function search_bash_history() {
-    local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | sort -rn | fzf | sed 's/^[[:space:]]*//')
-    local selectionlength=$(expr length "$selection")
-    local selectionslice=$(echo "$selection" | cut -c 1-40)
+    local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
+    local selectiontext="${selection:0:40}"
     if [[ ! -z $selection ]]; then
-        if [ $selectionlength -gt 40 ]; then
-            local additionalchars=$(expr $selectionlength - 40)
-            selectionslice=$(echo "${selectionslice}... +${additionalchars} characters") 
+        if (( ${#selection} > 40 )); then
+            selectiontext+="... +$(expr length "${selection: 40}") characters" 
         fi
-        echo -e "✨ Invoked \033[35;1m$selectionslice\033[m! ✨"
+        echo -e "✨ Invoked \033[35;1m$selectiontext\033[m from bash history! ✨"
         eval "$selection"
     fi   
 }
@@ -68,7 +72,6 @@ alias cdd="cd ~/Documents"                                                      
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Access bash profile
 alias bback='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backed up bash profile'               # bback:        Backup bash profile
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
-alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
 alias initDB='psql -U postgres -f'                                                                                  # initsql:      Initializes a specified SQL database
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
