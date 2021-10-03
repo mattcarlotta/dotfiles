@@ -41,6 +41,14 @@ sudo apt-get install tmux
 ### JS/TS
 
 - [nodejs](https://nodejs.org/en/)
+
+```DOSINI
+sudo apt-get install curl python-software-properties software-properties-common
+(change 'xx.x' to current LTS version)
+curl -sL https://deb.nodesource.com/setup_xx.x | sudo bash -
+sudo apt-get install nodejs
+```
+
 - diagnosticls/eslint/tsserver/yarn
 
 ```DOSINI
