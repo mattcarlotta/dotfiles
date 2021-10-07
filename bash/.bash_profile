@@ -72,6 +72,7 @@ alias cdd="cd ~/Documents"                                                      
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Access bash profile
 alias bback='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backed up bash profile'               # bback:        Backup bash profile
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
+alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
 alias initDB='psql -U postgres -f'                                                                                  # initsql:      Initializes a specified SQL database
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal

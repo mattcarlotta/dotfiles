@@ -20,5 +20,5 @@ nnoremap <leader>pv :Vex!<CR><C-w>=
 nnoremap <leader>pe :Ex<CR>
 nnoremap <leader>ts :!tmux neww tmux-sessionizer<CR>
 nnoremap <leader>d  :Telescope live_grep<cr>
-nnoremap <leader>pf :Files<CR>
+nnoremap <leader>pf :Rg<CR>
 
