@@ -36,7 +36,6 @@ function check_branch_status() {
 function check_git_status() {
     local gitbranch=""
     if $(dir_is_tracked); then
-        local gitstatus=$(git status)
         local gitbranchstatus=$(check_branch_status)
         local checkedoutbranch=$(git branch | grep -e "*" | cut -c3-)
 
