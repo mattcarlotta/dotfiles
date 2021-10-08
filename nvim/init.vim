@@ -6,10 +6,6 @@ filetype plugin indent on
 
 call plug#begin('~/.vim/plugged')
 
-" Fuzzy finder
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
 " theme
 Plug 'ayu-theme/ayu-vim'
 

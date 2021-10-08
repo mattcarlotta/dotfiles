@@ -1,7 +1,7 @@
-nnoremap <leader><C-f> :Telescope find_files<cr>
-nnoremap <leader><C-g> :Telescope live_grep<cr>
-nnoremap <leader><C-b> :Telescope buffers<cr>
-nnoremap <leader><C-h> :Telescope help_tags<cr>
+nnoremap <leader>ff :Telescope find_files<cr>
+nnoremap <leader>fg :Telescope live_grep<cr>
+nnoremap <leader>fb :Telescope buffers<cr>
+nnoremap <leader>fh :Telescope help_tags<cr>
 
 lua << EOF
 require('telescope').setup{
