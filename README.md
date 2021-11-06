@@ -1,8 +1,8 @@
 # dotfiles
 
-## Requirements
+My personal setup to get a DE up and running.
 
-### Editor
+## Editor
 
 - nvim
 
@@ -38,7 +38,7 @@ sudo apt-get install ripgrep
 sudo apt-get install tmux
 ```
 
-### JS/TS
+## JS/TS
 
 - [nodejs](https://nodejs.org/en/)
 
@@ -55,11 +55,17 @@ sudo apt-get install nodejs
 sudo npm install -g yarn typescript typescript-language-server diagnostic-languageserver eslint_d
 ```
 
-### Rust
+## Rust
 
 - cargo/rust
 
 ```DOSINI
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 rustup default nightly
+```
+
+- lsd
+
+```DOSINI
+cargo install lsd
 ```

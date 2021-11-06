@@ -4,7 +4,7 @@
 "nnoremap <silent> K     :lua vim.lsp.buf.hover()<CR>
 "nnoremap <silent> gD    :lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> gS    :lua vim.lsp.buf.signature_help()<CR>
-nnoremap <silent> ggD   :lua vim.lsp.buf.type_definition()<CR>
+nnoremap <silent> gtD   :lua vim.lsp.buf.type_definition()<CR>
 nnoremap <silent> gtd   :lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gb    :lua vim.lsp.buf.references()<CR>
 "nnoremap <silent> g0    :lua vim.lsp.buf.document_symbol()<CR>
