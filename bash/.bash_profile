@@ -68,15 +68,19 @@ alias ..='cd ../'                                                               
 alias ...='cd ../../'                                                                                               # ...:          Go back 2 directory levels
 alias c='clear'                                                                                                     # c:            Clear terminal display
 alias cdd="cd ~/Documents"                                                                                          # cdd:          Change directory in Documents
+alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Access bash profile
 alias bback='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backed up bash profile'               # bback:        Backup bash profile
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
+alias shc='nvim ~/.ssh/config'                                                                                      # shc:          SSH config
 alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
 alias initDB='psql -U postgres -f'                                                                                  # initsql:      Initializes a specified SQL database
 alias c.='code .'                                                                                                   # c.:           Opens code at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
 alias sbh=search_bash_history                                                                                       # sbh:          Searches bash history using fzf
 alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
+alias mys='ssh myserver'                                                                                            # mys:          SSH into my server
+alias sjsapp='ssh sjsapp'                                                                                           # sjsapp:       SSH into my client server
 
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
 alias gc='git commit -am'                                                                                           # gc:           Commits new files for git
