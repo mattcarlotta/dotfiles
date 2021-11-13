@@ -23,7 +23,8 @@ function check_branch_status() {
     local unstaged=$(echo $gitstatus | grep -e "Changes not staged" -e "Untracked files")
     local staged=$(echo $gitstatus | grep -e "Changes to be committed")
     local branch=$(git branch | grep -e "*" | cut -c3-)
-    local unpushed_commits=$(git log origin/$branch..$branch)
+    local remote=$(echo $gitstatus | grep -oP "(?<=').*?(?=')")
+    local unpushed_commits=$(git log $remote..$branch)
     local commit=$(git rev-parse --short HEAD)
 
     if [ ! -z "$unstaged" ]; then
