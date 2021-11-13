@@ -23,15 +23,15 @@ function check_branch_status() {
     local unstaged=$(echo $gitstatus | grep -e "Changes not staged" -e "Untracked files")
     local staged=$(echo $gitstatus | grep -e "Changes to be committed")
     local branch=$(git branch | grep -e "*" | cut -c3-)
-    local remote=$(echo $gitstatus | grep -oP "(?<=').*?(?=')")
-    local unpushed_commits=$(git log $remote..$branch)
+    local remote_branch=$(git remote -v)
+    local unpushed_commits=$(git log origin/$branch..$branch)
     local commit=$(git rev-parse --short HEAD)
 
     if [ ! -z "$unstaged" ]; then
         echo " 🔴 \[\033[91m\][branch:unstaged]"
     elif [ ! -z "$staged" ]; then
         echo " 🟣 \[\033[95m\][branch:staged]"
-    elif [ ! -z "$unpushed_commits" ] && [ ! -z "$remote_branch" ]; then
+    elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
         echo " 📤 \[\033[96m\][branch:desynced($commit)]"
     else
         echo " 🌱 \[\033[32m\][branch:current($commit)]"
