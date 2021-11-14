@@ -73,12 +73,6 @@ function print_success() {
     echo -e "\n✨ Successfully $action \033[35;1m$input_file\033[m and saved the result to \033[35;1m$output_file\033[m ✨"
 }
 
-# Invokes openssl with arguments
-function openssl_proc() {
-    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 $1 -salt -pbkdf2 -in $2 -out $3 2>&1)
-    echo "$error"
-}
-
 # Prints an error to shell
 function print_error() {
     local error_code=$1
@@ -98,6 +92,12 @@ function print_error() {
     esac
 
     echo -e "$error_message\033[m"
+}
+
+# Invokes openssl with arguments
+function openssl_proc() {
+    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 $1 -salt -pbkdf2 -in $2 -out $3 2>&1)
+    echo "$error"
 }
 
 # Encrypts a file using OpenSSL with a password (asked upon execution) and saves it to a new file
