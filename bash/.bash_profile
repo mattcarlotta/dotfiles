@@ -51,7 +51,7 @@ function check_git_status() {
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
 }
 
-# Fuzzy finder for searching through bash history and copying selection to the clipboard
+# Fuzzy finder for searching through bash history and invokes selection
 function search_bash_history() {
     local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
     local selectiontext="${selection:0:40}"
@@ -64,11 +64,40 @@ function search_bash_history() {
     fi   
 }
 
+# Prints a success message to shell
+function print_success() {
+    local action=$1
+    local input_file=$2
+    local output_file=$3
+
+    echo -e "\n✨ Successfully $action \033[35;1m$input_file\033[m and saved the result to \033[35;1m$output_file\033[m ✨"
+}
+
+# Invokes openssl with arguments
+function openssl_proc() {
+    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 $1 -salt -pbkdf2 -in $2 -out $3 2>&1)
+    echo "$error"
+}
+
 # Prints an error to shell
 function print_error() {
-    local message=$1
+    local error_code=$1
+    local error=$2
+    local error_message="\n⛔ \033[91;1mERROR: "
 
-    echo -e "\n⛔ \033[91;1mERROR: $message\033[m"
+    case $error_code in
+    1)
+        error_message+="You must include an input file to $error!" 
+        ;;
+    2)
+        error_message+="You must include an output file to save the $error result!"
+        ;;
+    *)
+        error_message+="$error"
+        ;;
+    esac
+
+    echo -e "$error_message\033[m"
 }
 
 # Encrypts a file using OpenSSL with a password (asked upon execution) and saves it to a new file
@@ -77,20 +106,20 @@ function encrypt_file() {
     local output_file=$2
 
     if [ -z $input_file ]; then
-        print_error "You must include an input file to encrypt"
+        print_error 1 "encrypt"
         return
     fi
 
     if [ -z $output_file ]; then
-        print_error "You must include an output file to save the encrypted result!"
+        print_error 2 "encrypted"
         return
     fi
 
-    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 -e -salt -pbkdf2 -in $input_file -out $output_file 2>&1)
+    local error=$(openssl_proc -e $input_file $output_file)
     if [[ -z $error ]]; then
-        echo -e "\n✨ Successfully encrypted \033[35;1m$input_file\033[m and saved the result to \033[35;1m$output_file\033[m ✨"
+        print_success "encrypted" "$input_file" "$output_file"
     else
-        print_error "Unable to encrypt $input_file because...\n$error"
+        print_error 3 "Unable to encrypt $input_file because...\n$error"
     fi
 }
 
@@ -101,20 +130,20 @@ function decrypt_file() {
     local output_file=$2
 
     if [ -z $input_file ]; then
-        print_error "You must include an input file to decrypt"
+        print_error 1 "decrypt"
         return
     fi
 
     if [ -z $output_file ]; then
-        print_error "You must include an output file to save the decrypted result!"
+        print_error 2 "decrypted"
         return
     fi
 
-    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 -d -salt -pbkdf2 -in $input_file -out $output_file 2>&1)
+    local error=$(openssl_proc -d $input_file $output_file)
     if [[ -z $error ]]; then
-        echo -e "\n✨ Successfully decrypted \033[35;1m$input_file\033[m and saved the result to \033[35;1m$output_file\033[m ✨"
+        print_success "decrypted" "$input_file" "$output_file"
     else
-        print_error "Unable to decrypt $input_file because...\n$error"
+        print_error 3 "Unable to decrypt $input_file because...\n$error"
     fi
 }
 
@@ -158,7 +187,7 @@ alias noshot='ssh-add ~/.ssh/id_ed25519'                                        
 alias matt='ssh-add ~/.ssh/id_rsa'                                                                                  # matt:         SSH with matt
 
 ### CUSTOM FUNCTION ALIASES
-alias enc=encrypt_file                                                                                              # enc:          Encrypts file, usage: enc input.txt output.dat
+alias enc=encrypt_file                                                                                              # enc:          Encrypts file, usage: enc input.txt output.enc
 alias dec=decrypt_file                                                                                              # dec:          Decrypts file, usage: dec input.dat output.txt
 alias sbh=search_bash_history                                                                                       # sbh:          Searches bash history using fzf
 
@@ -198,7 +227,6 @@ alias cbld='cargo build --release'                                              
 alias crel='cargo run --release'                                                                                    # crel:         Cargo run with release
 alias cwat='cargo watch -x run'                                                                                     # cwat:         Cargo watch
 alias cclp='cargo clippy'                                                                                           # cclp:         Cargo clippy
-
 
 ### TMUX ALIASES
 alias t='tmux'                                                                                                      # t:            Runs tmux
