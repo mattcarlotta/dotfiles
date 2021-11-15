@@ -105,12 +105,12 @@ function encrypt_file() {
     local input_file=$1
     local output_file=$2
 
-    if [ -z $input_file ]; then
+    if [[ -z $input_file ]]; then
         print_error 1 "encrypt"
         return
     fi
 
-    if [ -z $output_file ]; then
+    if [[ -z $output_file ]]; then
         print_error 2 "encrypted"
         return
     fi
@@ -129,12 +129,12 @@ function decrypt_file() {
     local input_file=$1
     local output_file=$2
 
-    if [ -z $input_file ]; then
+    if [[ -z $input_file ]]; then
         print_error 1 "decrypt"
         return
     fi
 
-    if [ -z $output_file ]; then
+    if [[ -z $output_file ]]; then
         print_error 2 "decrypted"
         return
     fi
@@ -153,20 +153,24 @@ PROMPT_COMMAND=check_git_status
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 
-### DIRECTORY ALIASES
-alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level
-alias ...='cd ../../'                                                                                               # ...:          Go back 2 directory levels
-alias c='clear'                                                                                                     # c:            Clear terminal display
-alias cdd="cd ~/Documents"                                                                                          # cdd:          Change directory in Documents
-alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
-alias e='exit'                                                                                                      # e:            Exit terminal
-alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
-alias c.='code .'                                                                                                   # c.:           Opens VSCode at directory
-
 ### BASH PROFILE ALIASES
+alias c='clear'                                                                                                     # c:            Clear terminal display
+alias c.='code .'                                                                                                   # c.:           Opens VSCode at directory
+alias e='exit'                                                                                                      # e:            Exit terminal
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Access bash profile
 alias bback='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backed up bash profile'               # bback:        Backup bash profile
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
+
+### DIRECTORY ALIASES
+alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level
+alias ...='cd ../../'                                                                                               # ...:          Go back 2 directory levels
+alias cdd="cd ~/Documents"                                                                                          # cdd:          Change directory in Documents
+alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
+alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
+
+### PROCESS ALIASES
+alias fpid='lsof -i'                                                                                                # fpid:         Finds the process id running on specified port
+alias k9='kill -9'                                                                                                  # k9:           Kills specified process id
 
 ### NVIM ALIASES
 alias vinit='nvim ~/.config/nvim/init.vim'                                                                          # vinit:        Edit vim init
