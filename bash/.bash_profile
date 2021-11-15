@@ -222,6 +222,7 @@ alias ya='yarn add'                                                             
 alias yad='yarn add -D'                                                                                             # yad:          Add dev dependency to project
 alias yr='yarn remove'                                                                                              # yr:           Remove dependency from project
 alias yo='yarn outdated'                                                                                            # yo:           Check for outdated project dependencies
+alias yui='yarn upgrade-interactive --latest'                                                                       # yui:          Upgrade outdated project dependencies interactively
 alias yd='yarn dev'                                                                                                 # yd:           Runs yarn dev script command
 alias ys='yarn start'                                                                                               # ys:           Runs yarn start script command
 
