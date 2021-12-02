@@ -22,19 +22,19 @@ function check_branch_status() {
     local gitstatus=$(git status)
     local unstaged=$(echo $gitstatus | grep -e "Changes not staged" -e "Untracked files")
     local staged=$(echo $gitstatus | grep -e "Changes to be committed")
-    local branch=$(git branch | grep -e "*" | cut -c3-)
+    local branch=$(echo $gitstatus | grep -e "On branch" | awk '{ print $3 }')
     local remote_branch=$(git remote -v)
     local unpushed_commits=$(git log origin/$branch..$branch 2>&1)
-    local commit=$(git rev-parse --short HEAD)
-
+    local commit=$(git rev-parse --short HEAD 2>/dev/null)
+    
     if [ ! -z "$unstaged" ]; then
         echo " 🔴 \[\033[91m\][branch:unstaged]"
     elif [ ! -z "$staged" ]; then
         echo " 🟣 \[\033[95m\][branch:staged]"
     elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
-        echo " 📤 \[\033[96m\][branch:desynced($commit)]"
+        echo " 📤 \[\033[96m\][branch:desynced(${commit:=unknown})]"
     else
-        echo " 🌱 \[\033[32m\][branch:current($commit)]"
+        echo " 🌱 \[\033[32m\][branch:current(${commit:=unknown})]"
     fi
 }
 
@@ -43,9 +43,9 @@ function check_git_status() {
     local gitbranch=""
     if $(dir_is_tracked); then
         local gitbranchstatus=$(check_branch_status)
-        local checkedoutbranch=$(git branch | grep -e "*" | cut -c3-)
+        local checkedoutbranch=$(git status | grep -e "On branch" | awk '{ print $3 }')
 
-        gitbranch="🌿 \[\033[32m\][git:$checkedoutbranch]$gitbranchstatus"
+        gitbranch="🌿 \[\033[32m\][git:${checkedoutbranch}]$gitbranchstatus"
     fi
 
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
@@ -232,6 +232,9 @@ alias cbld='cargo build --release'                                              
 alias crel='cargo run --release'                                                                                    # crel:         Cargo run with release
 alias cwat='cargo watch -x run'                                                                                     # cwat:         Cargo watch
 alias cclp='cargo clippy'                                                                                           # cclp:         Cargo clippy
+
+### CONKY
+alias cconf='sudo nvim /etc/conky/conky.conf'                                                                       # cconf:        Edit conky conf
 
 ### TMUX ALIASES
 alias t='tmux'                                                                                                      # t:            Runs tmux
