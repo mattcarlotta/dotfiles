@@ -152,6 +152,7 @@ PROMPT_COMMAND=check_git_status
 
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
+export EDITOR=/usr/local/bin/nvim
 
 ### BASH PROFILE ALIASES
 alias c='clear'                                                                                                     # c:            Clear terminal display
