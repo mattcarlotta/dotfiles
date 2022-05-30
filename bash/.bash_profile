@@ -1,3 +1,64 @@
+# Prints an error to shell
+function print_error() {
+    local error=$1
+    local error_message="\n⛔ \033[91;1mERROR: $error"
+
+    echo -e "$error_message\033[m"
+}
+
+# Prints not a git tracked folder to stdout
+function print_not_git_tracked() {
+  print_error "Unable to locate git status -- you may be not in a git tracked folder"
+}
+
+# Git status
+function g_stat() {
+  echo "$(git status 2>&1)"
+}
+
+# Check if git tracked
+function not_git_tracked() {
+  echo "$(g_stat | grep "not a git repository")"
+}
+
+# Current branch
+function current_branch() {
+  echo "$(g_stat | grep -e "On branch" | awk '{ print $3 }')"
+}
+
+# Detached head
+function head_detached() {
+  echo "$(g_stat | grep -e "HEAD detached" | awk '{ print $4 }')"
+}
+
+# Deletes staging branch
+function delete_staging_branch() {
+  git branch -D staging &>/dev/null
+}
+
+# Displays the file status of a git branch 
+function check_branch_status() {
+    local unstaged=$(g_stat | grep -e "Changes not staged" -e "Untracked files")
+    local staged=$(g_stat | grep -e "Changes to be committed")
+    local branch=$(current_branch)
+    local detached_head=$(head_detached)
+    local remote_branch=$(git remote -v)
+    local unpushed_commits=$(git log origin/$branch..$branch 2>&1)
+    local commit=$(git rev-parse --short HEAD 2>/dev/null)
+
+    if [ ! -z "$detached_head" ]; then
+        echo " ✂️  \[\033[96m\][branch:detached]"
+    elif [ ! -z "$unstaged" ]; then
+        echo " 🔴 \[\033[91m\][branch:unstaged]"
+    elif [ ! -z "$staged" ]; then
+        echo " 🟣 \[\033[95m\][branch:staged]"
+    elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
+        echo " 📤 \[\033[96m\][branch:desynced(${commit:="unknown"})]"
+    else
+        echo " 🌱 \[\033[32m\][branch:current(${commit:="unknown"})]"
+    fi
+}
+
 # Parses the parent directories of the current working directory to determine if any are git tracked
 function dir_is_tracked() {
     IFS='\/'
@@ -17,44 +78,52 @@ function dir_is_tracked() {
     echo $gittracked
 }
 
-# Displays the file status of a git branch 
-function check_branch_status() {
-    local gitstatus=$(git status)
-    local unstaged=$(echo $gitstatus | grep -e "Changes not staged" -e "Untracked files")
-    local staged=$(echo $gitstatus | grep -e "Changes to be committed")
-    local branch=$(echo $gitstatus | grep -e "On branch" | awk '{ print $3 }')
-    local remote_branch=$(git remote -v)
-    local unpushed_commits=$(git log origin/$branch..$branch 2>&1)
-    local commit=$(git rev-parse --short HEAD 2>/dev/null)
-    
-    if [ ! -z "$unstaged" ]; then
-        echo " 🔴 \[\033[91m\][branch:unstaged]"
-    elif [ ! -z "$staged" ]; then
-        echo " 🟣 \[\033[95m\][branch:staged]"
-    elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
-        echo " 📤 \[\033[96m\][branch:desynced(${commit:=unknown})]"
-    else
-        echo " 🌱 \[\033[32m\][branch:current(${commit:=unknown})]"
-    fi
-}
-
 # Displays the status of a git branch if a parent folder is git tracked
 function check_git_status() {
     local gitbranch=""
     if $(dir_is_tracked); then
         local gitbranchstatus=$(check_branch_status)
-        local checkedoutbranch=$(git status | grep -e "On branch" | awk '{ print $3 }')
+        local checkedoutbranch=$(current_branch)
+        local detached_head=$(head_detached)
 
-        gitbranch="🌿 \[\033[32m\][git:${checkedoutbranch}]$gitbranchstatus"
+        gitbranch="🌿 \[\033[32m\][git:${checkedoutbranch:=$detached_head}]$gitbranchstatus"
     fi
 
     PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
 }
 
+# Checks outs selected branch
+function gbs() {
+    if [[ ! -z $(not_git_tracked) ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+    local branch=$(git branch -a | awk '{ print $0 }' | sed -e 's/\*/ /g' -e 's/[[:space:]]//g' | fzf)
+
+    if [[ ! -z "$branch" ]]; then
+        git checkout $branch
+    fi
+}
+
+# Pushes commits up to origin using currently selected branch
+function gpush() {
+    local branch=$(current_branch)
+
+    if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+
+    git push $1 origin $branch
+}
+
 # Fuzzy finder for searching through bash history and invokes selection
-function search_bash_history() {
+function sbh() {
     local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
     local selectiontext="${selection:0:40}"
+
     if [[ ! -z $selection ]]; then
         if (( ${#selection} > 40 )); then
             selectiontext+="... +$(expr length "${selection: 40}") characters" 
@@ -64,89 +133,94 @@ function search_bash_history() {
     fi   
 }
 
-# Prints a success message to shell
-function print_success() {
-    local action=$1
-    local input_file=$2
-    local output_file=$3
+# Rebases current branch with upstream
+function rbb() {
+    local branch=$(current_branch)
 
-    echo -e "\n✨ Successfully $action \033[35;1m$input_file\033[m and saved the result to \033[35;1m$output_file\033[m ✨"
-}
-
-# Prints an error to shell
-function print_error() {
-    local error_code=$1
-    local error=$2
-    local error_message="\n⛔ \033[91;1mERROR: "
-
-    case $error_code in
-    1)
-        error_message+="You must include an input file to $error!" 
-        ;;
-    2)
-        error_message+="You must include an output file to save the $error result!"
-        ;;
-    *)
-        error_message+="$error"
-        ;;
-    esac
-
-    echo -e "$error_message\033[m"
-}
-
-# Invokes openssl with arguments
-function openssl_proc() {
-    local error=$(openssl enc -base64 -aes-256-cbc -md sha256 $1 -salt -pbkdf2 -in $2 -out $3 2>&1)
-    echo "$error"
-}
-
-# Encrypts a file using OpenSSL with a password (asked upon execution) and saves it to a new file
-function encrypt_file() {
-    local input_file=$1
-    local output_file=$2
-
-    if [[ -z $input_file ]]; then
-        print_error 1 "encrypt"
+    if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
+        print_not_git_tracked
         return
     fi
 
-    if [[ -z $output_file ]]; then
-        print_error 2 "encrypted"
+    git fetch upstream
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to fetch upstream $branch"
         return
     fi
 
-    local error=$(openssl_proc -e $input_file $output_file)
-    if [[ -z $error ]]; then
-        print_success "encrypted" "$input_file" "$output_file"
-    else
-        print_error 3 "Unable to encrypt $input_file because...\n$error"
+    git rebase upstream/$branch
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to rebase upstream $branch"
+        return
     fi
 }
 
+# Rebases the forked headless branch and pushes updates to Github
+function rbm() {
+    git checkout main
 
-# Decrypts a file using OpenSSL with a password (asked upon execution) and saves it to a new file
-function decrypt_file() {
-    local input_file=$1
-    local output_file=$2
+    rbb
 
-    if [[ -z $input_file ]]; then
-        print_error 1 "decrypt"
+    git push origin main -f
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to push rebase commits to remote origin main"
         return
-    fi
-
-    if [[ -z $output_file ]]; then
-        print_error 2 "decrypted"
-        return
-    fi
-
-    local error=$(openssl_proc -d $input_file $output_file)
-    if [[ -z $error ]]; then
-        print_success "decrypted" "$input_file" "$output_file"
-    else
-        print_error 3 "Unable to decrypt $input_file because...\n$error"
     fi
 }
 
+# Pulls in a remote PR branch into local repo
+function pulldown() {
+   local pull_id=$1 
+   local branch=$2
+
+   if [[ -z $pull_id ]]; then
+      print_error "You must include a pull request number"
+      return
+   fi
+
+   if [[ -z $branch ]]; then
+      print_error "You must include a local branch to create"
+      return
+   fi
+
+   git fetch upstream pull/$pull_id/head:$branch
+   if [[ $? -ne 0 ]]; then
+      print_error "Failed fetch PR#$pull_id from upstream"
+      return
+   fi
+
+   git checkout $branch
+}
+
+# Deletes a local branch
+function gbd() {
+    if [[ ! -z $(not_git_tracked) ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+    local branch=$(git branch | awk '{ print $0 }' | sed -e 's/\*/ /g' -e 's/[[:space:]]//g' | fzf)
+
+    if [[ ! -z "$branch" ]]; then
+       git checkout main 
+       git branch -D $branch
+    fi
+}
+
+# Checks out a remote branch and creates a local branch
+function gchrb() {
+    if [[ ! -z $(not_git_tracked) ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+    local branch=$(git branch -a | awk '{ print $0 }' | sed -e 's/\*/ /g' -e 's/[[:space:]]//g' | grep -e 'remotes/upstream' | fzf)
+
+    if [[ ! -z "$branch" ]]; then
+       local remote_branch=$(echo $branch | sed 's/remotes\/upstream\///g') 
+       git checkout -b $remote_branch upstream/$remote_branch
+    fi
+}
 
 PROMPT_COMMAND=check_git_status
 
@@ -191,24 +265,28 @@ alias rmssh='ssh-add -D'                                                        
 alias noshot='ssh-add ~/.ssh/id_ed25519'                                                                            # noshot:       SSH with noshot
 alias matt='ssh-add ~/.ssh/id_rsa'                                                                                  # matt:         SSH with matt
 
-### CUSTOM FUNCTION ALIASES
-alias enc=encrypt_file                                                                                              # enc:          Encrypts file, usage: enc input.txt output.enc
-alias dec=decrypt_file                                                                                              # dec:          Decrypts file, usage: dec input.dat output.txt
-alias sbh=search_bash_history                                                                                       # sbh:          Searches bash history using fzf
-
 ### GIT ALIASES
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
+alias gb='git branch'                                                                                               # gb:           Lists all local branches
+alias gba='git branch -a'                                                                                           # gba:          Lists all local and remote branches
 alias gc='git commit -am'                                                                                           # gc:           Commits new files for git
+alias gca='git commit --amend'                                                                                      # gca:          Ammends staged changes to last commits
+alias gchb='git checkout -b'                                                                                        # gchb:         Checks out a new branch
 alias gx='git clean -df'                                                                                            # gx:           Removes untracked git files
 alias gi='git init'                                                                                                 # gi:           Initialize directory for git
 alias gd='git diff'                                                                                                 # gd:           Git diff
 alias gds='git diff --staged'                                                                                       # gds:          Git diff staged
+alias gfu='git fetch upstream'                                                                                      # gfu:          Fetches upstream commits/branches
 alias gl='git log'                                                                                                  # gl:           Displays git logs
 alias gp='git pull'                                                                                                 # gp:           Pulls from git branch
 alias gpsh='git push origin'                                                                                        # gpsh:         Pushes commits to remote
+alias gch='git checkout'                                                                                            # gch:          Checks out branch
+alias gchb='git checkout -b'                                                                                        # gchb:         Creates and checks out branch
+alias gchm='git checkout main'                                                                                      # gchm:         Checks out main branch
 alias gs='git status'                                                                                               # gs:           Displays status of git tracking
 alias gclr='git clean -f -d'                                                                                        # gclr:         Remove untracked git files
 alias gt='git ls-files | xargs -I{} git log -1 --format="%ai {}" {}'                                                # gt:           Displays tracked files
+alias clone='git clone'                                                                                             # clone:        Clone remote repo
 
 ### NGINX ALIASES
 alias nga='sudo nvim /etc/nginx/sites-available/mattcarlotta.sh'                                                    # nga:          Edit app nginx config
@@ -217,15 +295,26 @@ alias ngt='sudo nginx -t'                                                       
 alias ngres='sudo systemctl restart nginx'                                                                          # ngres:        Restart nginx
 alias ngrel='sudo systemctl reload nginx'                                                                           # ngrel:        Reload nginx
 
-### YARN ALIASES
-alias y='yarn'                                                                                                      # y:            Run yarn install
-alias ya='yarn add'                                                                                                 # ya:           Add dependency to project
-alias yad='yarn add -D'                                                                                             # yad:          Add dev dependency to project
-alias yr='yarn remove'                                                                                              # yr:           Remove dependency from project
-alias yo='yarn outdated'                                                                                            # yo:           Check for outdated project dependencies
-alias yui='yarn upgrade-interactive --latest'                                                                       # yui:          Upgrade outdated project dependencies interactively
-alias yd='yarn dev'                                                                                                 # yd:           Runs yarn dev script command
-alias ys='yarn start'                                                                                               # ys:           Runs yarn start script command
+#### YARN ALIASES
+#alias y='yarn'                                                                                                      # y:            Run yarn install
+#alias ya='yarn add'                                                                                                 # ya:           Add dependency to project
+#alias yad='yarn add -D'                                                                                             # yad:          Add dev dependency to project
+#alias yr='yarn remove'                                                                                              # yr:           Remove dependency from project
+#alias yo='yarn outdated'                                                                                            # yo:           Check for outdated project dependencies
+#alias yui='yarn upgrade-interactive --latest'                                                                       # yui:          Upgrade outdated project dependencies interactively
+#alias yd='yarn dev'                                                                                                 # yd:           Runs yarn dev script command
+#alias ys='yarn start'                                                                                               # ys:           Runs yarn start script command
+
+### NPM (FORMERLY YARN) ALIASES
+alias y='npm i'                                                                                                     # y:            Run npm install
+alias ya='npm install -S'                                                                                           # ya:           Add dependency to project
+alias yad='npm install -D'                                                                                          # yad:          Add dev dependency to project
+alias yr='npm uninstall -S'                                                                                         # yr:           Remove dependency from project
+alias yo='npm run outdated'                                                                                         # yo:           Check for outdated project dependencies
+alias yb='npm run build'                                                                                            # yb:           Runs npm run build script command
+alias yd='npm run dev'                                                                                              # yd:           Runs npm run dev script command
+alias ys='npm start'                                                                                                # ys:           Runs npm start script command
+alias yrun='npm run'                                                                                                # yrun:         Runs npm start script command
 
 ### CARGO ALIASES
 alias crun='cargo run'                                                                                              # crun:         Cargo run
