@@ -136,21 +136,22 @@ function sbh() {
 # Rebases current branch with upstream
 function rbb() {
     local branch=$(current_branch)
+    local stream=${1:-"origin"}
 
     if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
         print_not_git_tracked
         return
     fi
 
-    git fetch upstream
+    git fetch $stream
     if [[ $? -ne 0 ]]; then
-        print_error "Failed to fetch upstream $branch"
+        print_error "Failed to fetch $stream $branch"
         return
     fi
 
-    git rebase upstream/$branch
+    git rebase $stream/$branch
     if [[ $? -ne 0 ]]; then
-        print_error "Failed to rebase upstream $branch"
+        print_error "Failed to rebase $stream $branch"
         return
     fi
 }
@@ -227,6 +228,8 @@ PROMPT_COMMAND=check_git_status
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export EDITOR=/usr/local/bin/nvim
+export HISTSIZE=20000
+shopt -s histappend
 
 ### BASH PROFILE ALIASES
 alias c='clear'                                                                                                     # c:            Clear terminal display
@@ -248,10 +251,10 @@ alias fpid='lsof -i'                                                            
 alias k9='kill -9'                                                                                                  # k9:           Kills specified process id
 
 ### NVIM ALIASES
-alias vinit='nvim ~/.config/nvim/init.vim'                                                                          # vinit:        Edit vim init
+alias vinit='nvim ~/.config/nvim/init.lua'                                                                          # vinit:        Edit vim init
 alias v.="nvim ."                                                                                                   # v.            Open vim in current directory
 alias vim="nvim"                                                                                                    # vim:          Nvim alias
-alias vback='cp -r ~/.config/nvim ~/Documents/dotfiles/; echo Backed up dot files'                                  # vback:        Backup vim to ~/Documents/.dotfiles
+alias vback='cp -r ~/.config/nvim ~/Documents/dotfiles/; echo Backed up nvim files'                                 # vback:        Backup vim to ~/Documents/.dotfiles
 
 ### POSTGRESQL ALIASES
 alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
@@ -259,6 +262,7 @@ alias initDB='psql -U postgres -f'                                              
 
 ### SSH ALIASES
 alias shc='nvim ~/.ssh/config'                                                                                      # shc:          Edits SSH config
+alias myw='ssh mywebsite'                                                                                           # myw:          SSH into my website
 alias mys='ssh myserver'                                                                                            # mys:          SSH into my server
 alias sjsapp='ssh sjsapp'                                                                                           # sjsapp:       SSH into my client server
 alias rmssh='ssh-add -D'                                                                                            # rmmssh:       Remove all ssh keys from manager
@@ -271,6 +275,7 @@ alias gb='git branch'                                                           
 alias gba='git branch -a'                                                                                           # gba:          Lists all local and remote branches
 alias gc='git commit -am'                                                                                           # gc:           Commits new files for git
 alias gca='git commit --amend'                                                                                      # gca:          Ammends staged changes to last commits
+alias gcan='git commit --amend --no-edit'                                                                           # gcan:         Ammends staged changes to last commits and doesn't edit commit message
 alias gchb='git checkout -b'                                                                                        # gchb:         Checks out a new branch
 alias gx='git clean -df'                                                                                            # gx:           Removes untracked git files
 alias gi='git init'                                                                                                 # gi:           Initialize directory for git
@@ -302,7 +307,9 @@ alias ngrel='sudo systemctl reload nginx'                                       
 #alias yr='yarn remove'                                                                                              # yr:           Remove dependency from project
 #alias yo='yarn outdated'                                                                                            # yo:           Check for outdated project dependencies
 #alias yui='yarn upgrade-interactive --latest'                                                                       # yui:          Upgrade outdated project dependencies interactively
+#alias ybr='yarn build && yarn start'                                                                                # ybr:          Runs yarn build and yarn start scripts
 #alias yd='yarn dev'                                                                                                 # yd:           Runs yarn dev script command
+#alias yb='yarn build'                                                                                               # yb:           Runs yarn build script command
 #alias ys='yarn start'                                                                                               # ys:           Runs yarn start script command
 
 ### NPM (FORMERLY YARN) ALIASES
@@ -310,7 +317,8 @@ alias y='npm i'                                                                 
 alias ya='npm install -S'                                                                                           # ya:           Add dependency to project
 alias yad='npm install -D'                                                                                          # yad:          Add dev dependency to project
 alias yr='npm uninstall -S'                                                                                         # yr:           Remove dependency from project
-alias yo='npm run outdated'                                                                                         # yo:           Check for outdated project dependencies
+alias yo='npm outdated'                                                                                             # yo:           Check for outdated project dependencies
+alias yui='npm update -S'                                                                                          # yui:          Upgrade outdated project dependencies interactively
 alias yb='npm run build'                                                                                            # yb:           Runs npm run build script command
 alias yd='npm run dev'                                                                                              # yd:           Runs npm run dev script command
 alias ys='npm start'                                                                                                # ys:           Runs npm start script command
@@ -331,7 +339,6 @@ alias t='tmux'                                                                  
 alias ta='tmux a'                                                                                                   # ta:           Runs tmux attach
 alias tk='tmux kill-server'                                                                                         # tk:           Kills tmux server
 alias tw='tmux neww'                                                                                                # tw:           New window
-alias twn='tmux neww -n'                                                                                            # twn:          New named window
 alias twdc='tmux nnew -d -c'                                                                                        # twdc:         New window at directory
 alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions 
 alias ts='tmux-sessionizer'                                                                                         # f:            Runs tmux-sessioner script

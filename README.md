@@ -15,9 +15,7 @@ sudo apt-get install neovim
 - nvim packer
 
 ```DOSINI
-cd ~/.config/
-mkdir nvim
-cd nvim
+mkdir ~/.config/nvim
 git clone --depth 1 https://github.com/wbthomason/packer.nvim\
  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 ```
@@ -51,7 +49,7 @@ curl -sL https://deb.nodesource.com/setup_xx.x | sudo bash -
 sudo apt-get install nodejs
 ```
 
-- diagnosticls/eslint/tsserver/yarn
+- diagnosticls/eslint/tsserver
 
 ```DOSINI
 sudo npm install -g typescript typescript-language-server diagnostic-languageserver eslint_d
