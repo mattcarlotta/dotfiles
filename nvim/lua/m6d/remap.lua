@@ -9,11 +9,11 @@ keymap_set("n", "<leader>sk", ":Telescope keymaps<CR>", { desc = '[S]earch [K]ey
 keymap_set("n", "<leader>sv", "<C-w>v", { desc = '[S]plit [V]ertical' })
 keymap_set("n", "<leader>sh", "<C-w>s", { desc = '[S]plit [H]orizontal' })
 keymap_set("n", "<leader>se", "<C-w>=", { desc = '[S]plit [E]qual' })
-keymap_set("n", "<leader>lw", "<C-w>h<CR>", { desc = 'lL]eft [W]indow' })
-keymap_set("n", "<leader>rw", "<C-w>l<CR>", { desc = '[R]ight [W]indow' })
-keymap_set("n", "<leader>tw", "<C-w>k<CR>", { desc = '[T]op [W]indow' })
-keymap_set("n", "<leader>bw", "<C-w>j<CR>", { desc = '[B]ottom [W]indow' })
-keymap_set("n", "<leader>cw", ":close<CR>", { desc = '[C]lose [W]indow' })
+keymap_set("n", "<leader>wl", "<C-w>h<CR>", { desc = 'lL]eft [W]indow' })
+keymap_set("n", "<leader>wr", "<C-w>l<CR>", { desc = '[R]ight [W]indow' })
+keymap_set("n", "<leader>wt", "<C-w>k<CR>", { desc = '[T]op [W]indow' })
+keymap_set("n", "<leader>wb", "<C-w>j<CR>", { desc = '[B]ottom [W]indow' })
+keymap_set("n", "<leader>wc", ":close<CR>", { desc = '[C]lose [W]indow' })
 
 -- regex find and replace all
 keymap_set("n", "<leader>ra", ":%s/", { desc = '[R]egex applies to [A]ll' })
