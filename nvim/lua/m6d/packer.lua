@@ -18,6 +18,15 @@ return require('packer').startup(function(use)
 	  end
   }
 
+  use {
+      'windwp/nvim-autopairs',
+      config = function()
+          require('nvim-autopairs').setup {
+              disable_filetype = { 'TelescopePrompt' }
+          }
+      end
+  }
+
   use({
       "folke/trouble.nvim",
       config = function()
@@ -30,7 +39,7 @@ return require('packer').startup(function(use)
       end
   })
 
-  use({ 
+  use({
       'lukas-reineke/indent-blankline.nvim',
       -- Enable `lukas-reineke/indent-blankline.nvim`
       -- See `:help indent_blankline.txt`
@@ -41,7 +50,12 @@ return require('packer').startup(function(use)
   })
 
   -- "gc" to comment visual regions/lines
-  use({ 'numToStr/Comment.nvim', opts = {} })
+  use {
+      'numToStr/Comment.nvim',
+      config = function()
+          require('Comment').setup()
+      end
+  }
 
   use {
       'lewis6991/gitsigns.nvim',
@@ -49,6 +63,16 @@ return require('packer').startup(function(use)
   }
 
   use({"nvim-treesitter/nvim-treesitter", run = ":TSUpdate"})
+  use {
+    'windwp/nvim-ts-autotag',
+    branch = 'main',
+    requires = {
+      'nvim-treesitter/nvim-treesitter',
+    },
+    config = function ()
+      require('nvim-ts-autotag').setup()
+    end
+  }
   use("theprimeagen/harpoon")
   use("mbbill/undotree")
   use("tpope/vim-fugitive")
