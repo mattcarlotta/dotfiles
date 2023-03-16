@@ -30,6 +30,19 @@ return require('packer').startup(function(use)
       end
   })
 
+  use({ 
+      'lukas-reineke/indent-blankline.nvim',
+      -- Enable `lukas-reineke/indent-blankline.nvim`
+      -- See `:help indent_blankline.txt`
+      opts = {
+          char = '┊',
+          show_trailing_blankline_indent = false,
+      }
+  })
+
+  -- "gc" to comment visual regions/lines
+  use({ 'numToStr/Comment.nvim', opts = {} })
+
   use {
       'lewis6991/gitsigns.nvim',
       -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)

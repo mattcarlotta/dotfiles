@@ -1,10 +1,12 @@
+vim.o.completeopt = 'menuone,noselect'
 vim.g.ayucolor = 'dark'
 vim.g.ayu_extended_palette = true
 
 local opt = vim.opt
 
+opt.guicursor = ""
 opt.nu = true
-opt.relativenumber = true
+opt.relativenumber = false
 opt.tabstop = 4
 opt.softtabstop = 4
 opt.shiftwidth = 4
