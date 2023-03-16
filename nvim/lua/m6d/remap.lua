@@ -21,7 +21,7 @@ keymap_set("n", "<leader>ra", ":%s/", { desc = '[R]egex applies to [A]ll' })
 keymap_set("n", "<leader>rl", ":s/", { desc = '[R]egex applies to current [L]ine' })
 
 -- format on save
-keymap_set("n", "<leader>f", vim.cmd.Format, { desc = '[F]ormat' })
+keymap_set("n", "<leader>f", vim.lsp.buf.format)
 
 -- move selection up or down
 keymap_set("v", "J", ":m '>+1<CR>gv=gv", { desc = 'Moves highlighted selection up' })
