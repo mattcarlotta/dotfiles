@@ -244,6 +244,7 @@ alias ..='cd ../'                                                               
 alias ...='cd ../../'                                                                                               # ...:          Go back 2 directory levels
 alias cdd="cd ~/Documents"                                                                                          # cdd:          Change directory in Documents
 alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
+alias cddw="cd ~/Downloads"                                                                                         # cddw:         Change directory in Downloads
 alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
 
 ### PROCESS ALIASES
