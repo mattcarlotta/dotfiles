@@ -63,11 +63,16 @@ sudo npm install -g typescript typescript-language-server diagnostic-languageser
 
 ```DOSINI
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-rustup default nightly
 ```
 
 - lsd
 
 ```DOSINI
 cargo install lsd
+```
+
+- stylua
+
+```DOSINI
+cargo install stylua
 ```
