@@ -164,6 +164,11 @@ _G.packer_plugins = {
     path = "/home/m6d/.local/share/nvim/site/pack/packer/opt/neodim",
     url = "https://github.com/zbirenbaum/neodim"
   },
+  ["null-ls.nvim"] = {
+    loaded = true,
+    path = "/home/m6d/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
+    url = "https://github.com/jose-elias-alvarez/null-ls.nvim"
+  },
   ["nvim-autopairs"] = {
     config = { "\27LJ\2\2p\0\0\3\0\6\0\t6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\4\0005\2\3\0=\2\5\1B\0\2\1K\0\1\0\21disable_filetype\1\0\0\1\2\0\0\20TelescopePrompt\nsetup\19nvim-autopairs\frequire\0" },
     loaded = true,

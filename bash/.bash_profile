@@ -256,6 +256,7 @@ alias vinit='nvim ~/.config/nvim/init.lua'                                      
 alias v.="nvim ."                                                                                                   # v.            Open vim in current directory
 alias vim="nvim"                                                                                                    # vim:          Nvim alias
 alias vback='cp -r ~/.config/nvim ~/Documents/dotfiles/; echo Backed up nvim files'                                 # vback:        Backup vim to ~/Documents/.dotfiles
+alias vconf='cd ~/.config/nvim && vim .'                                                                            # vconf:        CD to nvim config and enter vim
 
 ### POSTGRESQL ALIASES
 alias pg='psql -U postgres'                                                                                         # pg:           Connects to postgreSQL
