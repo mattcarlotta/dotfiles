@@ -21,8 +21,15 @@ keymap_set("n", "<leader>ra", ":%s/", { desc = '[R]egex applies to [A]ll' })
 -- regex find and replace current line
 keymap_set("n", "<leader>rl", ":s/", { desc = '[R]egex applies to current [L]ine' })
 
--- format on save
-keymap_set("n", "<leader>f", vim.lsp.buf.format)
+-- format
+keymap_set("n", "<leader>fd", vim.lsp.buf.format, { desc = '[F]ormat using [D]efault formatter' })
+keymap_set("n", "<leader>fl", function()
+    vim.lsp.buf.format({
+        filter = function(client)
+            return client.name == "null-ls"
+        end,
+    })
+end, { desc = '[F]ormat using [L]SP formatter' })
 
 -- move selection up or down
 keymap_set("v", "J", ":m '>+1<CR>gv=gv", { desc = 'Moves highlighted selection up' })
@@ -40,10 +47,10 @@ keymap_set("n", "N", "Nzzzv", { desc = 'Keeps cursor in center while jumping to 
 keymap_set("x", "<leader>p", [["_dP]])
 
 --copy to clipboard
-keymap_set({"n", "v"}, "<leader>y", [["+y]], { desc = 'Copies selection to clipboard' })
+keymap_set({ "n", "v" }, "<leader>y", [["+y]], { desc = 'Copies selection to clipboard' })
 keymap_set("n", "<leader>Y", [["+Y]])
 
-keymap_set({"n", "v"}, "<leader>d", [["_d]])
+keymap_set({ "n", "v" }, "<leader>d", [["_d]])
 
 -- This is going to get me cancelled
 keymap_set("i", "<C-c>", "<Esc>")
