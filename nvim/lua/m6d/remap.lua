@@ -4,6 +4,7 @@ local keymap_set = vim.keymap.set
 
 keymap_set("n", "<leader>pv", vim.cmd.Ex, { desc = 'Open file explorer' })
 keymap_set("n", "<leader>sk", ":Telescope keymaps<CR>", { desc = '[S]earch [K]eymaps' })
+keymap_set("n", "<leader>pc", ":PackerSync<CR>", { desc = '[P]acker syn[C]' })
 
 -- window splitting vertical/horiztonal
 keymap_set("n", "<leader>sv", "<C-w>v", { desc = '[S]plit [V]ertical' })
