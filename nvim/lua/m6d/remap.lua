@@ -18,12 +18,17 @@ keymap_set("n", "<leader>wc", "<cmd>close<CR>", { desc = "[C]lose [W]indow" })
 
 keymap_set("n", "<leader>gs", vim.cmd.Git, { desc = "[G]it [S]tatus" })
 
-keymap_set("n", "<leader>xq", "<cmd>TroubleToggle quickfix<cr>", { silent = true, noremap = true })
+keymap_set(
+	"n",
+	"<leader>qf",
+	"<cmd>TroubleToggle quickfix<cr>",
+	{ desc = "[Q]uick [F]ix", silent = true, noremap = true }
+)
 
 keymap_set("n", "<leader>u", vim.cmd.UndotreeToggle)
 
 -- regex find and replace all
-keymap_set("n", "<leader>ra", ":%s/", { desc = "[R]egex applies to [A]ll" })
+keymap_set("n", "<leader>rf", ":%s/", { desc = "[R]egex applies to [F]ile" })
 -- regex find and replace current line
 keymap_set("n", "<leader>rl", ":s/", { desc = "[R]egex applies to current [L]ine" })
 
