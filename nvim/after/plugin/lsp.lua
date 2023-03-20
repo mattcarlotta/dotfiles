@@ -42,89 +42,47 @@ lsp.set_preferences({
 	suggest_lsp_servers = false,
 })
 
-local lsp_buf = vim.lsp.buf
-local diagnostic = vim.diagnostic
-
-lsp.on_attach(function(_client, bufnr)
+lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
 	local keymap_set = vim.keymap.set
 
 	keymap_set("n", "gd", function()
-		lsp_buf.definition()
+		vim.lsp.buf.definition()
 	end, opts)
 	keymap_set("n", "gt", function()
-		lsp_buf.type_definition()
+		vim.lsp.buf.type_definition()
 	end, opts)
 	keymap_set("n", "K", function()
-		lsp_buf.hover()
+		vim.lsp.buf.hover()
 	end, opts)
 	keymap_set("n", "<leader>ws", function()
-		lsp_buf.workspace_symbol()
+		vim.lsp.buf.workspace_symbol()
 	end, opts)
 	keymap_set("n", "<leader>dof", function()
-		diagnostic.open_float()
+		vim.diagnostic.open_float()
 	end, opts)
 	keymap_set("n", "[d", function()
-		diagnostic.goto_next()
+		vim.diagnostic.goto_next()
 	end, opts)
 	keymap_set("n", "]d", function()
-		diagnostic.goto_prev()
+		vim.diagnostic.goto_prev()
 	end, opts)
 	keymap_set("n", "<leader>ca", function()
-		lsp_buf.code_action()
+		vim.lsp.buf.code_action()
 	end, opts)
 	keymap_set("n", "<leader>rr", function()
-		lsp_buf.references()
+		vim.lsp.buf.references()
 	end, opts)
 	keymap_set("n", "<leader>rn", function()
-		lsp_buf.rename()
+		vim.lsp.buf.rename()
 	end, opts)
 	keymap_set("i", "<C-h>", function()
-		lsp_buf.signature_help()
+		vim.lsp.buf.signature_help()
 	end, opts)
 end)
 
-local null_ls = require("null-ls")
-
-local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
-
-lsp.build_options("null_ls", {})
-
-null_ls.setup({
-	-- you can reuse a shared lspconfig on_attach callback here
-	on_attach = function(client, bufnr)
-		if client.supports_method("textDocument/formatting") then
-			vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-			vim.api.nvim_create_autocmd("BufWritePre", {
-				group = augroup,
-				buffer = bufnr,
-				callback = function()
-					lsp_buf.format({
-						filter = function(c)
-							return c.name == "null-ls"
-						end,
-						bufnr = bufnr,
-					})
-				end,
-			})
-		end
-	end,
-
-	sources = {
-		null_ls.builtins.formatting.prettier,
-		null_ls.builtins.formatting.stylua,
-		null_ls.builtins.diagnostics.eslint_d,
-	},
-})
-
-require("mason-null-ls").setup({
-	ensure_installed = nil,
-	automatic_installation = true,
-	automatic_setup = false,
-})
-
 lsp.setup()
 
-diagnostic.config({
+vim.diagnostic.config({
 	virtual_text = true,
 })
