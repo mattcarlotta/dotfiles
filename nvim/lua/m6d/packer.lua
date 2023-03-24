@@ -51,12 +51,7 @@ return require("packer").startup(function(use)
 	})
 
 	-- "gc" to comment visual regions/lines
-	use({
-		"numToStr/Comment.nvim",
-		config = function()
-			require("Comment").setup()
-		end,
-	})
+	use("numToStr/Comment.nvim")
 
 	use({
 		"lewis6991/gitsigns.nvim",
