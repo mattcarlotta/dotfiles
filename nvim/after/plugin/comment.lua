@@ -3,19 +3,20 @@ local keymap_set = vim.keymap.set
 
 require("Comment").setup({
 	mappings = {
-		basic = false,
+		basic = true,
 	},
 	toggler = {
-		line = "<leader>cc",
-		block = "<leader>cbb",
+		line = "<leader>gcc",
+		block = "<leader>gcb",
 	},
 	opleader = {
-		line = "<leader>c",
+		line = "<leader>gc",
+		block = "<leader>gb",
 	},
 	extra = {
-		above = "<leader>cO",
-		below = "<leader>co",
-		eol = "<leader>cA",
+		above = "<leader>gcO",
+		below = "<leader>gco",
+		eol = "<leader>gcA",
 	},
 	ignore = "^$", -- Ignore empty lines
 	pre_hook = function(ctx)

@@ -18,6 +18,8 @@ keymap_set("n", "<leader>wc", "<cmd>close<CR>", { desc = "[C]lose [W]indow" })
 
 keymap_set("n", "<leader>gs", vim.cmd.Git, { desc = "[G]it [S]tatus" })
 
+keymap_set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "[L]sp [R]estart" })
+
 keymap_set(
 	"n",
 	"<leader>qf",
