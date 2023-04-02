@@ -6,7 +6,7 @@ local opt = vim.opt
 
 opt.guicursor = ""
 opt.nu = true
-opt.relativenumber = false
+opt.relativenumber = true
 opt.tabstop = 4
 opt.softtabstop = 4
 opt.shiftwidth = 4
