@@ -51,10 +51,10 @@ curl -sL https://deb.nodesource.com/setup_xx.x | sudo bash -
 sudo apt-get install nodejs
 ```
 
-- diagnosticls/eslint/tsserver
+- diagnosticls/eslint/tsserver/astro
 
 ```DOSINI
-sudo npm install -g typescript typescript-language-server diagnostic-languageserver eslint_d
+sudo npm install -g typescript typescript-language-server diagnostic-languageserver eslint_d @astrojs/language-server
 ```
 
 ## Rust
