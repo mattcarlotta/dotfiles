@@ -45,6 +45,7 @@ lsp.set_preferences({
 lsp.on_attach(function(client, bufnr)
 	local opts = { buffer = bufnr, remap = false }
 	local keymap_set = vim.keymap.set
+	lsp.buffer_autoformat()
 
 	keymap_set("n", "gd", function()
 		vim.lsp.buf.definition()

@@ -122,10 +122,10 @@ return require("packer").startup(function(use)
 		requires = { "kyazdani42/nvim-web-devicons", opt = true },
 	})
 
-	use({
-		"jose-elias-alvarez/null-ls.nvim",
-		requires = { "nvim-lua/plenary.nvim" },
-	})
+	-- use({
+	-- 	"jose-elias-alvarez/null-ls.nvim",
+	-- 	requires = { "nvim-lua/plenary.nvim" },
+	-- })
 
 	use("jay-babu/mason-null-ls.nvim")
 end)
