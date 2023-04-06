@@ -16,6 +16,8 @@ gUserRootDir=/home/$SUDO_USER
 
 gUserCargoRootDir=$gUserRootDir/cargo/.bin
 
+gUserPnpmRootDir=$gUserRootDir/.local/share/pnpm
+
 gBashFiles=('.bash_profile' 'alias.sh' 'custom-fns.sh')
 
 bold=$(tput bold)
@@ -31,8 +33,16 @@ magenta=$(tput setaf 5)
 cyan=$(tput setaf 6)
 white=$(tput setaf 7)
 
+function log_empty_line() {
+    echo -e " "
+}
+
+function log_message() {
+    echo -e "🤖 ${bold}${cyan}$1 ${normal}"
+}
 function log_error() {
-    echo -e "\n❌ ${bold}${red}ERROR: $1 ${normal}\n"
+    echo -e "\n❌ ${bold}${red}ERROR: $1 ${normal}"
+    log_message "I was unable to complete my mission. Self destructing... 💥\n"
     exit 1
 }
 
@@ -57,22 +67,52 @@ function begin_session() {
     echo -e "${cyan}------------------------------------ SCRIPT STARTED ON $gCurrentDate ----------------------------------${normal}\n"
 }
 
+function welcome_message() {
+    log_message "Welcome, space traveler, I am 343 Guilty Spark! I am the mission delegator for this installation."
+    sleep 3
+    log_empty_line
+    log_message "Hold one moment while I prepare your mission..."
+    sleep 3
+    log_empty_line
+    log_message "Done!"
+    sleep .75
+    log_empty_line
+    log_message "Yay!"
+    sleep .75
+    log_empty_line
+    log_message "My... \e[3mI\e[23m am a genius."
+    sleep 2
+    log_empty_line
+    log_message "Initializing the mission within your HUD. You should see it in..."
+    sleep 2
+    log_empty_line
+    local messages=("3" "2" "1")
+    for message in "${messages[@]}"
+    do
+        log_message "$message..."
+        sleep 1
+        log_empty_line
+    done
+}
+
 function copy_bash_files() {
+    log_message "Attempting to copy bash files..."
     for file in "${gBashFiles[@]}"
     do
         cp ./bash/$file $gUserRootDir/$file
         log_success "Copied $file -> $gUserRootDir/$file."
     done
-
-    source "$gUserRootDir/${gBashFiles[0]}"
-    log_success "Sourced $gUserRootDir/${gBashFiles[0]}"
+    log_info "You must manually run \e[45m${white} source $gUserRootDir/.bash_profile ${blue}\e[49m as \e[45m${white} $SUDO_USER ${blue}\e[49m to update that bash profile!"
+    log_empty_line
 }
 
 function install_nvim () {
+    log_message "Attempting to install nvim..."
     local nvim_bin=$(which nvim)
     if [ ! -z $nvim_bin ];
     then
         skip_warning nvim
+        log_empty_line
         return;
     fi
 
@@ -93,9 +133,11 @@ function install_nvim () {
     else
         log_success "Installed nvim -> $(which nvim)"
     fi
+    log_empty_line
 }
 
 function copy_nvim_files() {
+    log_message "Attempting to copy nvim files..."
     local nvim_dir=$gUserRootDir/.config/nvim
     if [ -d $nvim_dir ];
     then
@@ -121,14 +163,17 @@ function copy_nvim_files() {
 
     cp -rf ./nvim $gUserRootDir/nvim
     log_success "Copied all of the nvim config files -> $nvim_dir"
-    log_info "You must manually open $nvim_dir/lua/m6d/packer.lua within nvim and run :PackerSync to install nvim dependencies!"
+    log_info "You must manually open \e[45m${white} $nvim_dir/lua/m6d/packer.lua ${blue}\e[49m within nvim and run \e[45m${white} :PackerSync ${blue}\e[49m to install nvim dependencies!"
+    log_empty_line
 }
 
 function install_fzf() {
+    log_message "Attempting to install fzf..."
     local fzf_bin=$(which fzf)
     if [ ! -z $fzf_bin ];
     then
         skip_warning fzf
+        log_empty_line
         return;
     fi
 
@@ -139,13 +184,16 @@ function install_fzf() {
     fi
 
     log_success "Installed fzf -> $(which fzf)"
+    log_empty_line
 }
 
 function install_ripgrep() {
+    log_message "Attempting to install ripgrep..."
     local rg_bin=$(which rg)
     if [ ! -z $rg_bin ];
     then
         skip_warning rg
+        log_empty_line
         return;
     fi
 
@@ -156,14 +204,17 @@ function install_ripgrep() {
     fi
 
     log_success "Installed ripgrep -> $(which rg)"
+    log_empty_line
 }
 
 
 function install_tmux() {
+    log_message "Attempting to install tmux..."
     local tmux_bin=$(which tmux)
     if [ ! -z $tmux_bin ];
     then
         skip_warning tmux
+        log_empty_line
         return;
     fi
 
@@ -174,13 +225,16 @@ function install_tmux() {
     fi
 
     log_success "Installed tmux -> $(which tmux)"
+    log_empty_line
 }
 
 function install_node() {
+    log_message "Attempting to install node..."
     local node_bin=$(which node)
     if [ ! -z $node_bin ];
     then
         skip_warning node
+        log_empty_line
         return;
     fi
 
@@ -214,10 +268,34 @@ function install_node() {
     fi
 
     log_success "Installed node -> $(which node)"
+    log_empty_line
+}
+
+function install_pnpm() {
+    log_message "Attempting to install pnpm..."
+    local pnpm_user_bin=$gUserCargoRootDir/pnpm
+    local pnpm_bin=$(which pnpm)
+    if [ -f $pnpm_user_bin ] || [ ! -z pnpm_bin ];
+    then
+        log_warning "It appears pnpm is already installed in ${pnpm_user_bin:-$pnpm_bin}. Skipping."
+        log_empty_line
+        return;
+    fi
+
+    curl -fsSL https://get.pnpm.io/install.sh | sh -
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install pnpm."
+    fi
+
+    pnpm_bin=$(which pnpm)
+    log_success "Installed pnpm -> ${pnpm_user_bin:-$pnpm_bin}."
+    log_empty_line
 }
 
 function install_lsps() {
-    local lang_server=(tsc typescript-language-server diagnostic-languageserver eslint_d)
+    log_message "Attempting to install language servers..."
+    local lang_server=(tsc typescript-language-server diagnostic-languageserver eslint_d astro-ls)
 
     local install_lang_servers=""
     for lang in "${lang_server[@]}"
@@ -227,8 +305,22 @@ function install_lsps() {
         then
             skip_warning "$lang"
         else 
-            log_info "It appears $lang is not installed yet."
-            install_lang_servers+="$lang "
+            local lsp_name=$lang
+            local lsp=$lang
+            case $lang in 
+                "tsc")
+                    lsp_name="typescript"
+                    ;;
+                "astro-ls")
+                    lsp_name="astro"
+                    lsp="@astrojs/language-server"
+                    ;;
+                *)
+                    ;;
+            esac
+
+            log_info "It appears $lsp_name is not installed yet."
+            install_lang_servers+="$lsp "
         fi
     done
 
@@ -244,14 +336,17 @@ function install_lsps() {
     else
         log_warning "It appears all of the required LSPs are already installed."
     fi
+    log_empty_line
 }
 
 function install_cargo_rust() {
+    log_message "Attempting to install cargo rust..."
     local cargo_user_bin=$gUserCargoRootDir/cargo
     local cargo_bin=$(which cargo)
     if [ -f $cargo_user_bin ] || [ ! -z cargo_bin ];
     then
-        log_warning "It appears that cargo rust is already installed in ${cargo_user_bin:-$cargo_bin}. Skipping."
+        log_warning "It appears cargo rust is already installed in ${cargo_user_bin:-$cargo_bin}. Skipping."
+        log_empty_line
         return;
     fi
 
@@ -263,13 +358,16 @@ function install_cargo_rust() {
 
     cargo_bin=$(which cargo)
     log_success "Installed rust -> ${cargo_user_bin:-$cargo_bin}."
+    log_empty_line
 }
 
 function install_lsd() {
+    log_message "Attempting to install lsd..."
     local lsd_bin=$gUserCargoRootDir/lsd
     if [ ! -z $lsd_bin ];
     then
         log_warning "It appears that lsd is already installed in $lsd_bin. Skipping."
+        log_empty_line
         return;
     fi
 
@@ -280,13 +378,16 @@ function install_lsd() {
     fi
 
     log_success "Installed lsd -> $lsd_bin."
+    log_empty_line
 }
 
 function install_stylua() {
+    log_message "Attempting to install stylua..."
     local stylua_bin=$gUserCargoRootDir/stylua
     if [ ! -z $stylua_bin ];
     then
         log_warning "It appears that stylua is already installed in $stylua_bin. Skipping."
+        log_empty_line
         return;
     fi
 
@@ -297,13 +398,19 @@ function install_stylua() {
     fi
 
     log_success "Installed stylua -> $stylua_bin."
+    log_empty_line
 }
 
 function success_message() {
-    local set_foreground=$(tput setaf 7)
-    local set_background=$(tput setab 4)
-
-    echo -ne "\n🚀 \e[3m${bold}${set_foreground}${set_background} One man’s crappy software is another man’s full time job. Enjoy! ${normal}\e[0m\n"
+    local sign_off_messages=("Oh wow... We actually made it." "We actually made it." "I didn't believe we could do it. But we did..." "My... \e[3mI\e[23m am a genius." "I leave you with these parting words..." "\e[3mOne man's crappy software is another man's full time job.\e[23m")
+    for message in "${sign_off_messages[@]}"
+    do
+        log_message "$message"
+        sleep 2
+        log_empty_line
+    done
+    log_message "See you again, space traveler!"
+    sleep 1
 }
 
 function end_session() {
@@ -311,7 +418,14 @@ function end_session() {
 }
 
 function main() {
+    local skip_beginning_message=$1
+    local skip_ending_message=$2
+    clear
     begin_session
+    if [ -z $skip_beginning_message ];
+    then
+        welcome_message
+    fi
     copy_bash_files
     install_nvim
     copy_nvim_files
@@ -319,22 +433,25 @@ function main() {
     install_ripgrep
     install_tmux
     install_node
+    install_pnpm
     install_lsps
     install_cargo_rust
     install_lsd
     install_stylua
-    success_message
+    if [ -z $skip_ending_message ];
+    then
+        success_message
+    fi
     end_session
     exit 0
 }
 
-trap '{ end_session; exit 1; }' INT
-
+trap '{ exit 1; }' INT
 
 if [ "$(id -u)" -ne 0 ];
   then
     log_warning "This script must be run as a ${underline}ROOT USER${nounderline}!\n"
-    sudo "$0"
+    sudo "$0" $1 $2
   else
-    main $1
+    main $1 $2
 fi
