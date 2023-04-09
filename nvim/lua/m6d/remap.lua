@@ -22,22 +22,22 @@ keymap_set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "[L]sp [R]estart" 
 
 keymap_set("n", "<leader>tt", "<cmd>TroubleToggle<cr>", { desc = "[T]rouble [T]oggle", silent = true, noremap = true })
 keymap_set(
-	"n",
-	"<leader>td",
-	"<cmd>TroubleToggle document_diagnostics<cr>",
-	{ desc = "[T]rouble [D]ocument", silent = true, noremap = true }
+    "n",
+    "<leader>td",
+    "<cmd>TroubleToggle document_diagnostics<cr>",
+    { desc = "[T]rouble [D]ocument", silent = true, noremap = true }
 )
 keymap_set(
-	"n",
-	"<leader>tw",
-	"<cmd>TroubleToggle workspace_diagnostics<cr>",
-	{ desc = "[T]rouble [W]orkspace", silent = true, noremap = true }
+    "n",
+    "<leader>tw",
+    "<cmd>TroubleToggle workspace_diagnostics<cr>",
+    { desc = "[T]rouble [W]orkspace", silent = true, noremap = true }
 )
 keymap_set(
-	"n",
-	"<leader>tf",
-	"<cmd>TroubleToggle quickfix<cr>",
-	{ desc = "[T]rouble Quick [F]ix", silent = true, noremap = true }
+    "n",
+    "<leader>tf",
+    "<cmd>TroubleToggle quickfix<cr>",
+    { desc = "[T]rouble Quick [F]ix", silent = true, noremap = true }
 )
 
 keymap_set("n", "<leader>u", vim.cmd.UndotreeToggle)
@@ -50,11 +50,11 @@ keymap_set("n", "<leader>rl", ":s/", { desc = "[R]egex applies to current [L]ine
 -- format
 keymap_set("n", "<leader>fd", vim.lsp.buf.format, { desc = "[F]ormat using [D]efault formatter" })
 keymap_set("n", "<leader>fl", function()
-	vim.lsp.buf.format({
-		filter = function(client)
-			return client.name == "null-ls"
-		end,
-	})
+    vim.lsp.buf.format({
+        filter = function(client)
+            return client.name == "null-ls"
+        end,
+    })
 end, { desc = "[F]ormat using [L]SP formatter" })
 
 -- move selection up or down
@@ -91,5 +91,5 @@ keymap_set("n", "<leader>j", "<cmd>lprev<CR>zz")
 keymap_set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Changes file to be executable", silent = true })
 
 keymap_set("n", "<leader><leader>", function()
-	vim.cmd("so")
+    vim.cmd("so")
 end, { desc = "Sources current file" })
