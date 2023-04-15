@@ -161,11 +161,12 @@ function copy_nvim_files() {
         fi
     fi
 
-    cp -rf ./nvim $gUserRootDir/nvim
+    cp -rf ./nvim $nvim_dir
     log_success "Copied all of the nvim config files -> $nvim_dir"
     log_info "You must manually open \e[45m${white} $nvim_dir/lua/m6d/packer.lua ${blue}\e[49m within nvim and run \e[45m${white} :PackerSync ${blue}\e[49m to install nvim dependencies!"
     log_empty_line
 }
+
 
 function install_fzf() {
     log_message "Attempting to install fzf..."
@@ -207,7 +208,6 @@ function install_ripgrep() {
     log_empty_line
 }
 
-
 function install_tmux() {
     log_message "Attempting to install tmux..."
     local tmux_bin=$(which tmux)
@@ -225,6 +225,37 @@ function install_tmux() {
     fi
 
     log_success "Installed tmux -> $(which tmux)"
+    log_empty_line
+}
+
+function copy_tmux_files() {
+    log_message "Attempting to copy tmux files..."
+
+    cp -rf ./tmux/* $gUserRootDir
+    log_success "Copied all of the tmux config files -> $gUserRootDir"
+    log_empty_line
+}
+
+
+function install_conky() {
+    log_message "Attempting to install conky..."
+    local conky_bin=$(which conky)
+    if [ ! -z $conky_bin ];
+    then
+        skip_warning conky
+        log_empty_line
+        return;
+    fi
+
+    apt-get install conky conky-all lm-sensors hddtemp -y
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install conky."
+    fi
+
+    log_success "Installed conky -> $(which conky)"
+    cp -rf ./conky.conf /etc/conky/
+    log_success "Copied the conky config file to /etc/conky/"
     log_empty_line
 }
 
@@ -432,6 +463,8 @@ function main() {
     install_fzf
     install_ripgrep
     install_tmux
+    copy_tmux_files
+    install_conky
     install_node
     install_pnpm
     install_lsps
