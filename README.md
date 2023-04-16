@@ -1,6 +1,6 @@
 # dotfiles
 
-My personal setup to get a DE up and running.
+My setup to get a DE up and running.
 
 ![](https://raw.githubusercontent.com/mattcarlotta/dotfiles/main/nvim.png)
 

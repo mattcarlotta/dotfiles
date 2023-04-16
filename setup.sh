@@ -12,14 +12,18 @@
 
 gCurrentDate=$(/bin/date +"%m/%d/%Y %I:%M %p")
 
-gUserRootDir=/home/$SUDO_USER
+gUser=$USER
+gUserRootDir=/home/$gUser
 
-gUserCargoRootDir=$gUserRootDir/cargo/.bin
+gUserCargoRootDir=$gUserRootDir/.cargo/.bin
 
 gUserPnpmRootDir=$gUserRootDir/.local/share/pnpm
 
 gBashFiles=('.bash_profile' 'alias.sh' 'custom-fns.sh')
 
+gRandomNumber=$(shuf -i 0-99 -n 1)
+
+italic=$(tput sitm)
 bold=$(tput bold)
 underline=$(tput smul)
 nounderline=$(tput rmul)
@@ -37,9 +41,20 @@ function log_empty_line() {
     echo -e " "
 }
 
-function log_message() {
-    echo -e "🤖 ${bold}${cyan}$1 ${normal}"
+split_string() {
+  OPTIND=1;
+  while getopts ":" opt "-$1"; do 
+    echo -ne "${bold}${cyan}${italic}${OPTARG:-:}${normal}"
+    sleep 0.025
+  done
 }
+
+function log_message() {
+    echo -ne "🤖 " 
+    split_string "$1"
+    log_empty_line
+}
+
 function log_error() {
     echo -e "\n❌ ${bold}${red}ERROR: $1 ${normal}"
     log_message "I was unable to complete my mission. Self destructing... 💥\n"
@@ -68,11 +83,17 @@ function begin_session() {
 }
 
 function welcome_message() {
-    log_message "Welcome, space traveler, I am 343 Guilty Spark! I am the mission delegator for this installation."
-    sleep 3
+    log_message "Welcome, space traveler, I am 343 Guilty Spark!"
+    sleep 1
     log_empty_line
-    log_message "Hold one moment while I prepare your mission..."
-    sleep 3
+    log_message "I am an advanced sybernetic service AI for this installation."
+    sleep 1
+    log_empty_line
+    log_message "I can fix you."
+    sleep 1
+    log_empty_line
+    log_message "Hold one moment while I create a diagonstic..."
+    sleep 1
     log_empty_line
     log_message "Done!"
     sleep .75
@@ -80,11 +101,11 @@ function welcome_message() {
     log_message "Yay!"
     sleep .75
     log_empty_line
-    log_message "My... \e[3mI\e[23m am a genius."
+    log_message "My... I am a genius."
     sleep 2
     log_empty_line
-    log_message "Initializing the mission within your HUD. You should see it in..."
-    sleep 2
+    log_message "Initializing a diagonstic output within your HUD. You should see it in..."
+    sleep 1
     log_empty_line
     local messages=("3" "2" "1")
     for message in "${messages[@]}"
@@ -102,7 +123,8 @@ function copy_bash_files() {
         cp ./bash/$file $gUserRootDir/$file
         log_success "Copied $file -> $gUserRootDir/$file."
     done
-    log_info "You must manually run \e[45m${white} source $gUserRootDir/.bash_profile ${blue}\e[49m as \e[45m${white} $SUDO_USER ${blue}\e[49m to update that bash profile!"
+    source $gUserRootDir/.bash_profile
+    log_success "Sourced $gUserRootDir/.bash_profile"
     log_empty_line
 }
 
@@ -161,7 +183,7 @@ function copy_nvim_files() {
         fi
     fi
 
-    cp -rf ./nvim $gUserRootDir/.config/nvim
+    cp -rf ./nvim/* $nvim_dir
     log_success "Copied all of the nvim config files -> $nvim_dir"
     log_info "You must manually open \e[45m${white} $nvim_dir/lua/m6d/packer.lua ${blue}\e[49m within nvim and run \e[45m${white} :PackerSync ${blue}\e[49m to install nvim dependencies!"
     log_empty_line
@@ -292,7 +314,7 @@ function install_node() {
         log_success "Installed node ppa key"
     fi
 
-    apt-get install node -y
+    apt-get install nodejs -y
     if [[ $? -ne 0 ]];
     then
         log_error "Failed to install node."
@@ -394,8 +416,8 @@ function install_cargo_rust() {
 
 function install_lsd() {
     log_message "Attempting to install lsd..."
-    local lsd_bin=$gUserCargoRootDir/lsd
-    if [ -f $lsd_bin ];
+    local lsd_bin=$(which lsd)
+    if [ ! -z $lsd_bin ];
     then
         log_warning "It appears that lsd is already installed in $lsd_bin. Skipping."
         log_empty_line
@@ -408,14 +430,14 @@ function install_lsd() {
         log_error "Failed to install lsd."
     fi
 
-    log_success "Installed lsd -> $lsd_bin."
+    log_success "Installed lsd -> $gUserCargoRootDir/lsd."
     log_empty_line
 }
 
 function install_stylua() {
     log_message "Attempting to install stylua..."
-    local stylua_bin=$gUserCargoRootDir/stylua
-    if [ -f $stylua_bin ];
+    local stylua_bin=$(which lsd)
+    if [ ! -z $stylua_bin ];
     then
         log_warning "It appears that stylua is already installed in $stylua_bin. Skipping."
         log_empty_line
@@ -428,12 +450,12 @@ function install_stylua() {
         log_error "Failed to install stylua."
     fi
 
-    log_success "Installed stylua -> $stylua_bin."
+    log_success "Installed stylua -> $gUserCargoRootDir/stylua."
     log_empty_line
 }
 
 function success_message() {
-    local sign_off_messages=("Oh wow... We actually made it." "We actually made it." "I didn't believe we could do it. But we did..." "My... \e[3mI\e[23m am a genius." "I leave you with these parting words..." "\e[3mOne man's crappy software is another man's full time job.\e[23m")
+    local sign_off_messages=("Oh wow... I actually did it." "I actually fixed you." "I didn't believe I could do it. But I did..." "My... I am a genius." "I leave you with these parting words..." "One man's crappy software is another man's full time job.")
     for message in "${sign_off_messages[@]}"
     do
         log_message "$message"
@@ -441,11 +463,53 @@ function success_message() {
         log_empty_line
     done
     log_message "See you again, space traveler!"
-    sleep 1
+    sleep 0.5
 }
 
 function end_session() {
     echo -e "${cyan}\n---------------------------------------------- END OF SCRIPT ------------------------------------------------${normal}\n"
+}
+
+function install_with_sudo() {
+    log_message "Attempting to remove emotional trauma..."
+    echo -e "❌ ${bold}${red}ERROR: ACCESS DENIED! ${normal}"
+    sleep 2
+    log_empty_line
+    log_message "Oh, well, that's not supposed to happen."
+    sleep 1
+    log_empty_line
+    log_message "Umm, space traveler?"
+    sleep 1
+    log_empty_line
+    log_message "I need complete control of your mainframe..."
+    sleep 1
+    log_empty_line
+    log_message "Trust me! I've calculated a $gRandomNumber% probability that I won't corrupt it!"
+    sleep 1
+    log_empty_line
+    sudo echo -ne ""
+    log_message "I'm pretty I know what I'm doing... "
+    sleep 1
+    log_empty_line
+    log_message "Oh!"
+    sleep 2
+    log_empty_line
+    log_message "Wow."
+    sleep 2
+    log_empty_line
+    log_message "Now that's, uh, interesting..."
+    sleep 2
+    log_empty_line
+    log_message "Umm, perhaps, you shouldn't have given me control..."
+    sleep 1
+    log_empty_line
+    install_fzf
+    install_ripgrep
+    install_tmux
+    copy_tmux_files
+    install_conky
+    install_node
+    install_lsps
 }
 
 function main() {
@@ -460,17 +524,11 @@ function main() {
     copy_bash_files
     install_nvim
     copy_nvim_files
-    install_fzf
-    install_ripgrep
-    install_tmux
-    copy_tmux_files
-    install_conky
-    install_node
     install_pnpm
-    install_lsps
     install_cargo_rust
     install_lsd
     install_stylua
+    install_with_sudo
     if [ -z $skip_ending_message ];
     then
         success_message
@@ -481,10 +539,4 @@ function main() {
 
 trap '{ exit 1; }' INT
 
-if [ "$(id -u)" -ne 0 ];
-  then
-    log_warning "This script must be run as a ${underline}ROOT USER${nounderline}!\n"
-    sudo "$0" $1 $2
-  else
-    main $1 $2
-fi
+main $1 $2
