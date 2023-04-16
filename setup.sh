@@ -161,7 +161,7 @@ function copy_nvim_files() {
         fi
     fi
 
-    cp -rf ./nvim $nvim_dir
+    cp -rf ./nvim $gUserRootDir/.config/nvim
     log_success "Copied all of the nvim config files -> $nvim_dir"
     log_info "You must manually open \e[45m${white} $nvim_dir/lua/m6d/packer.lua ${blue}\e[49m within nvim and run \e[45m${white} :PackerSync ${blue}\e[49m to install nvim dependencies!"
     log_empty_line
@@ -355,7 +355,7 @@ function install_lsps() {
         fi
     done
 
-    if [ ! -z $install_lang_servers ];
+    if [[ ! -z $install_lang_servers ]];
     then
         npm install -g $install_lang_servers
         if [[ $? -ne 0 ]];
@@ -374,7 +374,7 @@ function install_cargo_rust() {
     log_message "Attempting to install cargo rust..."
     local cargo_user_bin=$gUserCargoRootDir/cargo
     local cargo_bin=$(which cargo)
-    if [ -f $cargo_user_bin ] || [ ! -z cargo_bin ];
+    if [ -f $cargo_user_bin ] || [ ! -z $cargo_bin ];
     then
         log_warning "It appears cargo rust is already installed in ${cargo_user_bin:-$cargo_bin}. Skipping."
         log_empty_line
@@ -395,7 +395,7 @@ function install_cargo_rust() {
 function install_lsd() {
     log_message "Attempting to install lsd..."
     local lsd_bin=$gUserCargoRootDir/lsd
-    if [ ! -z $lsd_bin ];
+    if [ -f $lsd_bin ];
     then
         log_warning "It appears that lsd is already installed in $lsd_bin. Skipping."
         log_empty_line
@@ -415,7 +415,7 @@ function install_lsd() {
 function install_stylua() {
     log_message "Attempting to install stylua..."
     local stylua_bin=$gUserCargoRootDir/stylua
-    if [ ! -z $stylua_bin ];
+    if [ -f $stylua_bin ];
     then
         log_warning "It appears that stylua is already installed in $stylua_bin. Skipping."
         log_empty_line
