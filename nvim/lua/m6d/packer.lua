@@ -4,12 +4,11 @@ return require("packer").startup(function(use)
     -- Packer can manage itself
     use("wbthomason/packer.nvim")
 
-    use({
-        "nvim-telescope/telescope.nvim",
-        tag = "0.1.1",
+    use {
+        'nvim-telescope/telescope.nvim', tag = '0.1.1',
         -- or                            , branch = '0.1.x',
-        requires = { { "nvim-lua/plenary.nvim" } },
-    })
+        requires = { { 'nvim-lua/plenary.nvim' } }
+    }
 
     use({
         "Luxed/ayu-vim",
@@ -18,6 +17,13 @@ return require("packer").startup(function(use)
             vim.cmd("colorscheme ayu")
         end,
     })
+
+    use({
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+    })
+
+    use("nvim-treesitter/nvim-treesitter-context")
 
     use({
         "windwp/nvim-autopairs",
@@ -52,6 +58,7 @@ return require("packer").startup(function(use)
 
     -- "gc" to comment visual regions/lines
     use("numToStr/Comment.nvim")
+
     use('JoosepAlviste/nvim-ts-context-commentstring');
 
     use({
@@ -59,8 +66,6 @@ return require("packer").startup(function(use)
         -- tag = 'release' -- To use the latest release (do not use this if you run Neovim nightly or dev builds!)
     })
 
-    use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
-    use("nvim-treesitter/nvim-treesitter-context")
     use({
         "windwp/nvim-ts-autotag",
         branch = "main",
@@ -71,9 +76,13 @@ return require("packer").startup(function(use)
             require("nvim-ts-autotag").setup()
         end,
     })
+
     use("theprimeagen/harpoon")
+
     use("mbbill/undotree")
+
     use("tpope/vim-fugitive")
+
     use({
         "VonHeikemen/lsp-zero.nvim",
         branch = "v1.x",
@@ -121,11 +130,6 @@ return require("packer").startup(function(use)
         "nvim-lualine/lualine.nvim",
         requires = { "kyazdani42/nvim-web-devicons", opt = true },
     })
-
-    -- use({
-    -- 	"jose-elias-alvarez/null-ls.nvim",
-    -- 	requires = { "nvim-lua/plenary.nvim" },
-    -- })
 
     use("jay-babu/mason-null-ls.nvim")
 end)
