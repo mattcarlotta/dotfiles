@@ -313,6 +313,8 @@ function install_node() {
     else
         log_success "Installed node ppa key"
     fi
+    
+    apt-get update
 
     apt-get install nodejs -y
     if [[ $? -ne 0 ]];
