@@ -14,14 +14,9 @@ gCurrentDate=$(/bin/date +"%m/%d/%Y %I:%M %p")
 
 gUser=$USER
 gUserRootDir=/home/$gUser
-
 gUserCargoRootDir=$gUserRootDir/.cargo/.bin
-
 gUserPnpmRootDir=$gUserRootDir/.local/share/pnpm
-
 gBashFiles=('.bash_profile' 'alias.sh' 'custom-fns.sh')
-
-gRandomNumber=$(shuf -i 0-99 -n 1)
 
 italic=$(tput sitm)
 bold=$(tput bold)
@@ -83,18 +78,13 @@ function begin_session() {
 }
 
 function welcome_message() {
-    log_message "Welcome, space traveler, I am 343 Guilty Spark!"
-    sleep 1
-    log_empty_line
-    log_message "I am an advanced sybernetic service AI for this installation."
-    sleep 1
-    log_empty_line
-    log_message "I can fix you."
-    sleep 1
-    log_empty_line
-    log_message "Hold one moment while I create a diagonstic..."
-    sleep 1
-    log_empty_line
+    local msgs=("Welcome, space traveler, I am 343 Guilty Sparc!" "I am an advanced sybernetic service AI for this installation." "I'm like a doctor." "But, I can actually fix you!" "Hold one moment while I generate a diagnostic..." )
+    for message in "${msgs[@]}"
+    do
+        log_message "$message"
+        sleep 1
+        log_empty_line
+    done
     log_message "Done!"
     sleep .75
     log_empty_line
@@ -104,16 +94,18 @@ function welcome_message() {
     log_message "My... I am a genius."
     sleep 2
     log_empty_line
-    log_message "Initializing a diagonstic output within your HUD. You should see it in..."
-    sleep 1
+    log_message "Initializing a diagnostic stream to your HUD. You should see it in..."
+    sleep 0.5
     log_empty_line
-    local messages=("3" "2" "1")
+    echo -ne "🤖 " 
+    local messages=("3... " "2... " "1... ")
     for message in "${messages[@]}"
     do
-        log_message "$message..."
+        echo -ne "${bold}${cyan}${italic}${message}${normal}"
         sleep 1
-        log_empty_line
     done
+    log_empty_line
+    log_empty_line
 }
 
 function copy_bash_files() {
@@ -456,8 +448,30 @@ function install_stylua() {
     log_empty_line
 }
 
+function install_with_sudo() {
+    log_message "Attempting to wipe emotional trauma..."
+    echo -e "❌ ${bold}${red}ERROR: ACCESS DENIED! ${normal}"
+    sleep 2
+    log_empty_line
+    local msgs=("Oh, well, that's not supposed to happen." "Umm, space traveler?" "I need complete control of your mainframe..." "Trust me! I've calculated a $(shuf -i 1-50 -n 1)% probability that I won't corrupt it!" )
+    for message in "${msgs[@]}"
+    do
+        log_message "$message"
+        sleep 1
+        log_empty_line
+    done
+    sudo echo -ne ""
+    local msgs2=("I'm pretty I know what I'm doing in here..." "Oh!" "Wow." "Now that's, uh... interesting..." "Umm, perhaps, you shouldn't have given me control...")
+    for message in "${msgs2[@]}"
+    do
+        log_message "$message"
+        sleep 1.5
+        log_empty_line
+    done
+}
+
 function success_message() {
-    local sign_off_messages=("Oh wow... I actually did it." "I actually fixed you." "I didn't believe I could do it. But I did..." "My... I am a genius." "I leave you with these parting words..." "One man's crappy software is another man's full time job.")
+    local sign_off_messages=("Oh wow... I actually did it." "I actually fixed you." "I didn't believe I could do it!" "By the way, did I forget to mention that you are my first patient?" "Oh well!" "My... I am a genius." "I leave you with these parting words..." "One man's crappy software is another man's full time job.")
     for message in "${sign_off_messages[@]}"
     do
         log_message "$message"
@@ -472,47 +486,6 @@ function end_session() {
     echo -e "${cyan}\n---------------------------------------------- END OF SCRIPT ------------------------------------------------${normal}\n"
 }
 
-function install_with_sudo() {
-    log_message "Attempting to remove emotional trauma..."
-    echo -e "❌ ${bold}${red}ERROR: ACCESS DENIED! ${normal}"
-    sleep 2
-    log_empty_line
-    log_message "Oh, well, that's not supposed to happen."
-    sleep 1
-    log_empty_line
-    log_message "Umm, space traveler?"
-    sleep 1
-    log_empty_line
-    log_message "I need complete control of your mainframe..."
-    sleep 1
-    log_empty_line
-    log_message "Trust me! I've calculated a $gRandomNumber% probability that I won't corrupt it!"
-    sleep 1
-    log_empty_line
-    sudo echo -ne ""
-    log_message "I'm pretty I know what I'm doing... "
-    sleep 1
-    log_empty_line
-    log_message "Oh!"
-    sleep 2
-    log_empty_line
-    log_message "Wow."
-    sleep 2
-    log_empty_line
-    log_message "Now that's, uh, interesting..."
-    sleep 2
-    log_empty_line
-    log_message "Umm, perhaps, you shouldn't have given me control..."
-    sleep 1
-    log_empty_line
-    install_fzf
-    install_ripgrep
-    install_tmux
-    copy_tmux_files
-    install_conky
-    install_node
-    install_lsps
-}
 
 function main() {
     local skip_beginning_message=$1
@@ -531,6 +504,13 @@ function main() {
     install_lsd
     install_stylua
     install_with_sudo
+    install_fzf
+    install_ripgrep
+    install_tmux
+    copy_tmux_files
+    install_conky
+    install_node
+    install_lsps
     if [ -z $skip_ending_message ];
     then
         success_message
