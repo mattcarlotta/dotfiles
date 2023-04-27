@@ -7,6 +7,7 @@ alias bb='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backe
 alias bab='cp ~/alias.sh ~/Documents/dotfiles/bash/alias.sh; echo Backed up bash alias'                             # ba:           Backup bash alias script
 alias bcb='cp ~/custom-fns.sh ~/Documents/dotfiles/bash/custom-fns.sh; echo Backed up bash custom fns'              # bcb:          Backup bash alias script
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
+alias cat='bat'                                                                                                     # cat:          Replace cat with bat
 
 ### DIRECTORY ALIASES
 alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level

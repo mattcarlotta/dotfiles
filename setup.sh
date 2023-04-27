@@ -428,6 +428,26 @@ function install_lsd() {
     log_empty_line
 }
 
+function install_bat() {
+    log_message "Attempting to install bat..."
+    local bat_bin=$(which bat)
+    if [ ! -z $bat_bin ];
+    then
+        log_warning "It appears that bat is already installed in $bat_bin. Skipping."
+        log_empty_line
+        return;
+    fi
+
+    cargo install bat
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install bat."
+    fi
+
+    log_success "Installed bat -> $gUserCargoRootDir/bat."
+    log_empty_line
+}
+
 function install_stylua() {
     log_message "Attempting to install stylua..."
     local stylua_bin=$(which lsd)
@@ -502,6 +522,7 @@ function main() {
     install_pnpm
     install_cargo_rust
     install_lsd
+    install_bat
     install_stylua
     install_with_sudo
     install_fzf
