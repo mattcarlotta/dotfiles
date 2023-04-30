@@ -250,6 +250,46 @@ function copy_tmux_files() {
     log_empty_line
 }
 
+function install_python3() {
+    log_message "Attempting to install python3..."
+    local python_bin=$(which python3)
+    if [ ! -z $python_bin ];
+    then
+        skip_warning python3
+        log_empty_line
+        return;
+    fi
+
+    apt-get install python3 -y
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install python3"
+    fi
+
+    log_success "Installed python3 -> $(which python3)"
+    log_empty_line
+}
+
+function install_clang() {
+    log_message "Attempting to install clang & clang format..."
+    local clang_bin=$(which clang)
+    if [ ! -z $clang_bin ];
+    then
+        skip_warning clang
+        log_empty_line
+        return;
+    fi
+
+    apt-get install clang clang-format -y
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install clang & clang-format."
+    fi
+
+    log_success "Installed clang -> $(which clang)"
+    log_success "Installed clang-format -> $(which clang-format)"
+    log_empty_line
+}
 
 function install_conky() {
     log_message "Attempting to install conky..."
@@ -270,6 +310,26 @@ function install_conky() {
     log_success "Installed conky -> $(which conky)"
     cp -rf ./conky.conf /etc/conky/
     log_success "Copied the conky config file to /etc/conky/"
+    log_empty_line
+}
+
+function install_xclip() {
+    log_message "Attempting to install xclip..."
+    local xclip_bin=$(which xclip)
+    if [ ! -z $xclip_bin ];
+    then
+        skip_warning xclip
+        log_empty_line
+        return;
+    fi
+
+    apt-get install xclip -y
+    if [[ $? -ne 0 ]];
+    then
+        log_error "Failed to install xclip."
+    fi
+
+    log_success "Installed xclip -> $(which xclip)"
     log_empty_line
 }
 
@@ -529,7 +589,10 @@ function main() {
     install_ripgrep
     install_tmux
     copy_tmux_files
+    install_python3
+    install_clang
     install_conky
+    install_xclip
     install_node
     install_lsps
     if [ -z $skip_ending_message ];
