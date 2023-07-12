@@ -13,7 +13,7 @@ function print_not_git_tracked() {
 
 # Git status
 function g_stat() {
-  echo "$(git status 2>&1)"
+  echo "$(git status --ignore-submodules=all 2>&1)"
 }
 
 # Check if git tracked
