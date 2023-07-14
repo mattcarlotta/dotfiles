@@ -60,7 +60,7 @@ alias gpsh='git push origin'                                                    
 alias gch='git checkout'                                                                                            # gch:          Checks out branch
 alias gchb='git checkout -b'                                                                                        # gchb:         Creates and checks out branch
 alias gchm='git checkout main'                                                                                      # gchm:         Checks out main branch
-alias gs='git status'                                                                                               # gs:           Displays status of git tracking
+alias gs='git status --ignore-submodules=all'                                                                       # gs:           Displays status of git tracking
 alias gclr='git clean -f -d'                                                                                        # gclr:         Remove untracked git files
 alias gt='git ls-files | xargs -I{} git log -1 --format="%ai {}" {}'                                                # gt:           Displays tracked files
 alias clone='git clone'                                                                                             # clone:        Clone remote repo
