@@ -1,15 +1,22 @@
-#### BASH PROFILE ALIASES
+#### MISC ALIASES
 alias c='clear'                                                                                                     # c:            Clear terminal display
 alias c.='code .'                                                                                                   # c.:           Opens VSCode at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
+alias cat='bat'                                                                                                     # cat:          Replace cat with bat
+
+#### BASH PROFILE ALIASES
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Edit bash profile
-alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
 alias bb='cp ~/.bash_profile ~/Documents/dotfiles/bash/.bash_profile; echo Backed up bash profile'                  # bb:           Backup bash profile
 alias bab='cp ~/alias.sh ~/Documents/dotfiles/bash/alias.sh; echo Backed up bash alias'                             # ba:           Backup bash alias script
-alias bcb='cp ~/custom-fns.sh ~/Documents/dotfiles/bash/custom-fns.sh; echo Backed up bash custom fns'              # bcb:          Backup bash alias script
+alias bcb='cp ~/custom-fns.sh ~/Documents/dotfiles/bash/custom-fns.sh; echo Backed up bash custom fns'              # bcb:          Backup bash custom fns script
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
+
+#### ZSH PROFILE ALIASES
+alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
+alias bz='cp ~/.zshrc ~/Documents/dotfiles/zsh/.zshrc; echo Backed up zsh profile'                                  # bz:           Backup zsh profile
+alias bza='cp ~/alias.zsh ~/Documents/dotfiles/zsh/alias.zsh; echo Backed up zsh alias'                             # bza:          Backup zsh alias script
+alias bzc='cp ~/custom-fns.sh ~/Documents/dotfiles/zsh/custom-fns.zsh; echo Backed up zsh custom fns'               # bzc:          Backup zsh custom fns script
 alias sz='source ~/.zshrc'                                                                                          # sz:           Sources zsh profile
-alias cat='bat'                                                                                                     # cat:          Replace cat with bat
 
 ### DIRECTORY ALIASES
 alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level
@@ -18,6 +25,7 @@ alias cdd="cd ~/Documents"                                                      
 alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
 alias cddw="cd ~/Downloads"                                                                                         # cddw:         Change directory in Downloads
 alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
+alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
 
 ### PROCESS ALIASES
 alias fpid='lsof -i'                                                                                                # fpid:         Finds the process id running on specified port
@@ -49,7 +57,8 @@ alias gb='git branch'                                                           
 alias gba='git branch -a'                                                                                           # gba:          Lists all local and remote branches
 alias gc='git commit -am'                                                                                           # gc:           Commits new files for git
 alias gca='git commit --amend'                                                                                      # gca:          Ammends staged changes to last commits
-alias gcan='git commit --amend --no-edit'                                                                           # gcan:         Ammends staged changes to last commits and doesn't edit commit message
+alias gcan='git commit --amend --no-edit'                                                                           # gcan:         Ammends staged changes to last commits without editing commit message
+alias gcan='git commit --amend --no-edit && gpush -f'                                                               # gcan:         Ammends staged changes to last commits without editing commit message and pushes up to remote
 alias gchb='git checkout -b'                                                                                        # gchb:         Checks out a new branch
 alias gx='git clean -df'                                                                                            # gx:           Removes untracked git files
 alias gi='git init'                                                                                                 # gi:           Initialize directory for git
