@@ -1,5 +1,5 @@
 local filetype = require("Comment.ft")
-local keymap_set = vim.keymap.set
+-- local keymap_set = vim.keymap.set
 
 require("Comment").setup({
     mappings = {
@@ -79,7 +79,7 @@ filetype.http = "# %s"
 -- )
 -- keymap_set("x", "<leader><", api.call("uncomment.current.linewise.op"), { expr = true, desc = "Comment current block" })
 
-keymap_set("n", "<leader>cp", "yycmp", {
-    remap = true,
-    desc = "Comment and duplicate line",
-})
+-- keymap_set("n", "<leader>gcp", "yycmp", {
+--     remap = true,
+--     desc = "Comment and duplicate line",
+-- })

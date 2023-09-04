@@ -1,0 +1,84 @@
+[legacy/profiles:]
+default='75f66232-98fb-4593-950d-e5e1f12db011'
+list=['75f66232-98fb-4593-950d-e5e1f12db011']
+
+[legacy/profiles:/:75f66232-98fb-4593-950d-e5e1f12db011]
+allow-bold=true
+background-color='rgb(9,13,15)'
+background-transparency-percent=42
+bold-color='#fffffafaf4f4'
+bold-color-same-as-fg=true
+bold-is-bright=false
+cell-width-scale=1.0
+cursor-background-color='#fffffafaf4f4'
+cursor-colors-set=true
+cursor-foreground-color='#0e0e10101919'
+default-size-columns=254
+default-size-rows=64
+font='FantasqueSansMono Nerd Font Bold 15'
+foreground-color='rgb(255,250,244)'
+highlight-colors-set=false
+login-shell=true
+palette=['rgb(35,35,35)', 'rgb(255,0,15)', 'rgb(140,225,11)', 'rgb(255,185,0)', 'rgb(0,141,248)', 'rgb(109,67,166)', 'rgb(0,216,235)', 'rgb(255,255,255)', 'rgb(68,68,68)', 'rgb(255,39,64)', 'rgb(171,225,91)', 'rgb(255,210,66)', 'rgb(0,146,255)', 'rgb(154,95,235)', 'rgb(103,255,240)', 'rgb(255,255,255)']
+use-system-font=false
+use-theme-background=false
+use-theme-colors=false
+use-theme-transparency=false
+use-transparent-background=false
+visible-name='Argonaut'
+
+[legacy/profiles:/:7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44]
+background-color='rgb(9,13,15)'
+bold-color='rgb(255,218,0)'
+bold-color-same-as-fg=false
+default-size-columns=134
+default-size-rows=30
+font='FantasqueSansMono Nerd Font 16'
+foreground-color='rgb(255,254,255)'
+login-shell=true
+palette=['rgb(34,34,34)', 'rgb(255,1,14)', 'rgb(141,224,15)', 'rgb(255,184,3)', 'rgb(0,141,249)', 'rgb(109,67,167)', 'rgb(0,217,235)', 'rgb(255,255,255)', 'rgb(68,68,68)', 'rgb(255,39,64)', 'rgb(171,225,91)', 'rgb(255,210,65)', 'rgb(1,146,255)', 'rgb(153,96,235)', 'rgb(103,254,239)', 'rgb(255,255,255)']
+use-system-font=false
+use-theme-colors=false
+use-theme-transparency=false
+visible-name='m6d'
+
+[legacy/profiles:/::7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44]
+default='7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44'
+list=['b1dcc9dd-5262-4d8d-a863-c897e6d979b9', '7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44']
+
+[legacy/profiles:/::7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44/:7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44]
+background-color='rgb(9,26,46)'
+bold-color='rgb(255,218,0)'
+bold-color-same-as-fg=false
+default-size-columns=134
+default-size-rows=30
+foreground-color='rgb(255,255,255)'
+palette=['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)', 'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)', 'rgb(147,161,161)', 'rgb(253,246,227)']
+use-theme-colors=false
+use-theme-transparency=false
+visible-name='m6d'
+
+[legacy/profiles:/::7d1ce7ec-01c3-4132-8d3d-585e6b7f5b44/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(9,26,46)'
+bold-color='rgb(255,218,0)'
+bold-color-same-as-fg=false
+default-size-columns=134
+default-size-rows=30
+foreground-color='rgb(255,255,255)'
+palette=['rgb(7,54,66)', 'rgb(220,50,47)', 'rgb(133,153,0)', 'rgb(181,137,0)', 'rgb(38,139,210)', 'rgb(211,54,130)', 'rgb(42,161,152)', 'rgb(238,232,213)', 'rgb(0,43,54)', 'rgb(203,75,22)', 'rgb(88,110,117)', 'rgb(101,123,131)', 'rgb(131,148,150)', 'rgb(108,113,196)', 'rgb(147,161,161)', 'rgb(253,246,227)']
+use-theme-colors=false
+use-theme-transparency=false
+
+[legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
+background-color='rgb(9,26,46)'
+bold-color='rgb(255,218,0)'
+bold-color-same-as-fg=false
+default-size-columns=120
+default-size-rows=30
+font='Fantasque Sans Mono 13'
+foreground-color='rgb(255,255,255)'
+palette=['rgb(7,54,66)', 'rgb(204,0,0)', 'rgb(78,154,6)', 'rgb(196,160,0)', 'rgb(52,101,164)', 'rgb(117,80,123)', 'rgb(6,152,154)', 'rgb(211,215,207)', 'rgb(163,167,159)', 'rgb(239,41,41)', 'rgb(138,226,52)', 'rgb(252,233,79)', 'rgb(114,159,207)', 'rgb(173,127,168)', 'rgb(52,226,226)', 'rgb(238,238,236)']
+use-system-font=false
+use-theme-colors=false
+use-theme-transparency=false
+visible-name='m6d'

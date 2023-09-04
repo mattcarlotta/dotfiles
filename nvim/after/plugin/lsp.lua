@@ -23,7 +23,17 @@ lsp.configure("lua_ls", {
     },
 })
 
-lsp.configure("ccls", { lsp = { use_defaults = true } })
+-- lsp.configure("ccls", {
+--     init_options = {
+--         compilationDatabaseDirectory = "build",
+--         index = {
+--             threads = 0,
+--         },
+--         clang = {
+--             excludeArgs = { "-frounding-math" },
+--         },
+--     }
+-- })
 
 local cmp = require("cmp")
 local cmp_select = { behavior = cmp.SelectBehavior.Select }

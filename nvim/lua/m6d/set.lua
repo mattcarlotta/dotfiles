@@ -26,6 +26,8 @@ opt.termguicolors = true
 opt.wrap = false
 
 opt.scrolloff = 20
+opt.sidescroll = 10
+opt.sidescrolloff = 10
 opt.signcolumn = "yes"
 opt.isfname:append("@-@")
 
