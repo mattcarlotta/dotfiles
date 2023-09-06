@@ -15,7 +15,7 @@ alias sp='source ~/.bash_profile'                                               
 alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
 alias bz='cp ~/.zshrc ~/Documents/dotfiles/zsh/.zshrc; echo Backed up zsh profile'                                  # bz:           Backup zsh profile
 alias bza='cp ~/alias.zsh ~/Documents/dotfiles/zsh/alias.zsh; echo Backed up zsh alias'                             # bza:          Backup zsh alias script
-alias bzc='cp ~/custom-fns.sh ~/Documents/dotfiles/zsh/custom-fns.zsh; echo Backed up zsh custom fns'               # bzc:          Backup zsh custom fns script
+alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/zsh/custom-fns.zsh; echo Backed up zsh custom fns'              # bzc:          Backup zsh custom fns script
 alias sz='source ~/.zshrc'                                                                                          # sz:           Sources zsh profile
 
 ### DIRECTORY ALIASES

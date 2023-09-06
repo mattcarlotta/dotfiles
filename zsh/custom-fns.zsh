@@ -47,22 +47,22 @@ function check_branch_status() {
     local commit=$(git rev-parse --short HEAD 2>/dev/null)
 
     if [ ! -z "$detached_head" ]; then
-        echo " ✂️  \[\033[96m\][branch:detached]"
+        echo " ✂️  \033[96m[branch:detached]"
     elif [ ! -z "$unstaged" ]; then
-        echo " 🔴 \[\033[91m\][branch:unstaged]"
+        echo " 🔴 \033[91m[branch:unstaged]"
     elif [ ! -z "$staged" ]; then
-        echo " 🟣 \[\033[95m\][branch:staged]"
+        echo " 🟣 \033[95m[branch:staged]"
     elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
-        echo " 📤 \[\033[96m\][branch:desynced(${commit:="unknown"})]"
+        echo " 📤 \033[96m[branch:desynced(${commit:="unknown"})]"
     else
-        echo " 🌱 \[\033[32m\][branch:current(${commit:="unknown"})]"
+        echo " 🌱 \033[32m[branch:current(${commit:="unknown"})]"
     fi
 }
 
 # Parses the parent directories of the current working directory to determine if any are git tracked
 function dir_is_tracked() {
     IFS='\/'
-    read -ra CWD<<< "$PWD"
+    read -rA CWD<<< "$PWD"
     IFS=''
 
     local parentdir=""
@@ -86,10 +86,10 @@ function check_git_status() {
         local checkedoutbranch=$(current_branch)
         local detached_head=$(head_detached)
 
-        gitbranch="🌿 \[\033[32m\][git:${checkedoutbranch:=$detached_head}]$gitbranchstatus"
+        gitbranch="🌿 \033[32m[git:${checkedoutbranch:=$detached_head}]$gitbranchstatus"
     fi
 
-    PS1="\[\033[34m\]┌─\[\033[m\] 🌀 \[\033[34m\][\u@\h] 📂 \[\033[33;1m\][\w\]]\[\033[m\] $gitbranch\[\033[m\]\n\[\033[34m\]└➤\[\033[m\] "
+    echo -e "\033[34m┌─\033[m 🌀 \033[34m[%n@%m] 📂 \033[33;1m[%~]\033[m $gitbranch \033[m \n\033[34m└➤\033[m "
 }
 
 # Checks outs selected branch
