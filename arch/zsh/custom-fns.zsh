@@ -121,14 +121,14 @@ function gpush() {
 
 # Fuzzy finder for searching through bash history and invokes selection
 function sbh() {
-    local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
+    local selection=$(cat ~/.zsh_history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
     local selectiontext="${selection:0:40}"
 
     if [[ ! -z $selection ]]; then
-        if (( ${#selection} > 40 )); then
-            selectiontext+="... +$(expr length "${selection: 40}") characters" 
-        fi
-        echo -e "✨ Invoked \033[35;1m$selectiontext\033[m from bash history! ✨"
+        # if (( ${#selection} > 40 )); then
+        #     selectiontext+="... +$(expr length "${selection: 40}") characters" 
+        # fi
+        echo -e "✨ Invoked \033[35;1m$selection\033[m from zsh history! ✨"
         eval "$selection"
     fi   
 }

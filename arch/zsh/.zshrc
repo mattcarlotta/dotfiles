@@ -15,9 +15,10 @@ setopt histignorealldups sharehistory
 bindkey -e
 
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTFILESIZE=10000
 HISTSIZE=5000
 SAVEHIST=2000
-HISTFILE=~/.zsh_history
+export HISTFILE=~/.zsh_history
 export GOROOT=/usr/lib/go
 export GOPATH=$HOME/go
 export PATH="$PATH:$GOPATH/bin"
