@@ -43,6 +43,11 @@ curl -sL https://deb.nodesource.com/setup_xx.x | sudo bash -
 sudo apt-get install nodejs
 ```
 
+- [pnpm](https://pnpm.io/installation)
+```DOSINI
+curl -fsSL https://get.pnpm.io/install.sh | sh -
+```
+
 - diagnosticls/eslint/tsserver/astro
 
 ```DOSINI
