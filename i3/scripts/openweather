@@ -20,7 +20,7 @@ URL="http://api.openweathermap.org/data/2.5/onecall?lat=${LAT}&lon=${LON}&units=
 WEATHER_RESPONSE=$(wget -qO- "${URL}")
 
 WEATHER_CONDITION=$(echo "$WEATHER_RESPONSE" | jq '.current.weather[0].main' | sed 's/"//g')
-WEATHER_TEMP=$(echo "$WEATHER_RESPONSE" | jq '.current.feels_like')
+WEATHER_TEMP=$(echo "$WEATHER_RESPONSE" | jq '.current.temp')
 WEATHER_INT=${WEATHER_TEMP%.*}
 
 TIME_NOW=$( echo "$WEATHER_RESPONSE" | jq '.current.dt')
@@ -80,7 +80,7 @@ else
     WEATHER_COLOR="${temps[$WEATHER_INT]}"
 fi
 
-WEATHER_TEMP_F=$(( WEATHER_INT * (9/5) + 32 ))
+WEATHER_TEMP_F=$(bc <<< "$WEATHER_TEMP*1.8+32")
 full_text="${WEATHER_ICON}  ${WEATHER_TEMP}°C (${WEATHER_TEMP_F}°F) ${DESCRIPTION}"
 if [ "$WEATHER_ALERT" != "null" ]; then
     WARN_START=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].start')
