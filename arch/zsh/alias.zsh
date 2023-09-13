@@ -18,6 +18,8 @@ alias i3c='nvim ~/.config/i3/config'                                            
 
 #### ZSH PROFILE ALIASES
 alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
+alias za='nvim ~/alias.zsh'                                                                                         # zb:           Edit zsh aliases
+alias zc='nvim ~/custom-fns.zsh'                                                                                    # zc:           Edit zsh custom-fns
 alias bz='cp ~/.zshrc ~/Documents/dotfiles/arch/zsh/.zshrc; echo Backed up zsh profile'                             # bz:           Backup zsh profile
 alias bza='cp ~/alias.zsh ~/Documents/dotfiles/arch/zsh/alias.zsh; echo Backed up zsh alias'                        # bza:          Backup zsh alias script
 alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/arch/zsh/custom-fns.zsh; echo Backed up zsh custom fns'         # bzc:          Backup zsh custom fns script
