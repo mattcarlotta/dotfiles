@@ -12,7 +12,7 @@ alias bcb='cp ~/custom-fns.sh ~/Documents/dotfiles/bash/custom-fns.sh; echo Back
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
 
 #### I3 CONFIG
-alias bi3c='cp -R ~/.config/i3 ~/Documents/dotfiles/i3; echo Backed up i3 configs'                                  # bi3c:          Backup i3 directory
+alias bi3c='cp -R ~/.config/i3/* ~/Documents/dotfiles/i3; echo Backed up i3 configs'                                # bi3c:          Backup i3 directory
 alias i3bc='nvim ~/.config/i3/i3blocks.conf'                                                                        # i3bc:         Edit i3 block config
 alias i3c='nvim ~/.config/i3/config'                                                                                # i3b:          Edit i3 config
 
@@ -140,7 +140,7 @@ alias tk='tmux kill-server'                                                     
 alias tw='tmux neww'                                                                                                # tw:           New window
 alias twdc='tmux nnew -d -c'                                                                                        # twdc:         New window at directory
 alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions 
-alias ts='~/tmux-sessionizer'                                                                                         # f:            Runs tmux-sessioner script
+alias ts='~/tmux-sessionizer'                                                                                       # ts:           Runs tmux-sessioner script
 alias tconf='nvim ~/.tmux.conf'                                                                                     # tconf:        Edit tmux config
 alias tback='cp ~/.tmux.conf ~/Documents/dotfiles/tmux; echo Backed up tmux conf'                                   # tback:        Back up tmux conf
 
