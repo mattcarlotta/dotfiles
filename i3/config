@@ -319,25 +319,33 @@ set $ws10 "10"
 # use workspaces on different displays:
 # where you have to replace VGA-0/HDMI-0 with the names for your displays
 # you can get from xrandr command
-#workspace $ws1 output VGA-0
-#workspace $ws2 output VGA-0
-#workspace $ws3 output HDMI-0
-#workspace $ws4 output HDMI-0
-#workspace $ws5 output HDMI-0
+workspace $ws1 output DP-2
+workspace $ws2 output DP-0
+workspace $ws3 output DP-0
+workspace $ws4 output DP-0
+workspace $ws5 output DP-0
+workspace $ws6 output DP-0
+workspace $ws7 output DP-0
+workspace $ws8 output DP-0
+workspace $ws9 output DP-0
+workspace $ws10 output DP-0
 
 # bind program to workspace and focus to them on startup:
-assign [class="Xfce4-terminal"] $ws1
-assign [class="(?i)firefox"] $ws2
-assign [class="Thunar"] $ws3
-assign [class="thunderbird"] $ws4
-assign [class="TelegramDesktop"] $ws5
+assign [class="Xfce4-terminal"] workspace $ws1
+assign [class="(?i)firefox"] workspace $ws2
+assign [class="dbeaver"] workspace $ws3
+assign [class="Postman"] workspace $ws4
+assign [class="thunderbird"] workspace $ws5
+assign [class="Thunar"] workspace $ws6
+assign [class="Slack"] workspace $ws7
+# assign [class="TelegramDesktop"] $ws5
 
 # automatic set focus new window if it opens on another workspace than the current:
 for_window [class=Xfce4-terminal] focus
-for_window [class=(?i)firefox] focus
-for_window [class=Thunar] focus
-for_window [class=Thunderbird] focus
-for_window [class=TelegramDesktop] focus
+# for_window [class=(?i)firefox] focus
+# for_window [class=Thunar] focus
+# for_window [class=Thunderbird] focus
+# for_window [class=TelegramDesktop] focus
 
 ##############
 # compositor #
@@ -435,9 +443,20 @@ exec --no-startup-id /usr/bin/dunst
 
 # Autostart apps as you like
 #exec --no-startup-id sleep 2 && xfce4-terminal
+# 1
 exec --no-startup-id sleep 1 && gnome-terminal 
+# 2
 exec --no-startup-id sleep 2 && firefox 
-#exec --no-startup-id sleep 3 && thunar
+# 3
+exec --no-startup-id sleep 3 && dbeaver 
+# 4
+exec --no-startup-id sleep 4 && postman 
+# 6
+exec --no-startup-id sleep 5 && thunderbird 
+# 7
+exec --no-startup-id sleep 6 && thunar
+# 8
+exec --no-startup-id sleep 7 && slack
 
 ###############
 # system tray #

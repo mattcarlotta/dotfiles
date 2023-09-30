@@ -81,13 +81,13 @@ else
 fi
 
 WEATHER_TEMP_F=$(bc <<< "$WEATHER_TEMP*1.8+32")
-full_text="${WEATHER_ICON}  ${WEATHER_TEMP}°C (${WEATHER_TEMP_F}°F) ${DESCRIPTION}"
+full_text="${WEATHER_ICON} ${WEATHER_TEMP}°C (${WEATHER_TEMP_F}°F) ${DESCRIPTION}"
 if [ "$WEATHER_ALERT" != "null" ]; then
     WARN_START=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].start')
     WARN_END=$(echo "$WEATHER_RESPONSE" | jq '.alerts[0].end')
     WARN_START=$(date -d @"$WARN_START" +%a_%k:%M)
     WARN_END=$(date -d @"$WARN_END" +%a_%k:%M)
-    full_text="${WEATHER_ICON}  ${WEATHER_TEMP}°C: ${DESCRIPTION}  ${WEATHER_ALERT} from ${WARN_START} to ${WARN_END}  "
+    full_text="${WEATHER_ICON} ${WEATHER_TEMP}°C (${WEATHER_TEMP_F}°F): ${DESCRIPTION}   ${WEATHER_ALERT} from ${WARN_START} to ${WARN_END}  "
 fi
 
 
