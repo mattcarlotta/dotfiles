@@ -47,15 +47,15 @@ function check_branch_status() {
     local commit=$(git rev-parse --short HEAD 2>/dev/null)
 
     if [ ! -z "$detached_head" ]; then
-        echo " ✂️  \033[96m[branch:detached]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m  [branch:detached] \e[0m\e[32m\uE0B0\e[0m"
     elif [ ! -z "$unstaged" ]; then
-        echo " 🔴 \033[91m[branch:unstaged]"
+        echo "\e[32;41m\uE0B0\e[0m\e[30;41m [branch:unstaged] \e[0m\e[31m\uE0B0\e[0m"
     elif [ ! -z "$staged" ]; then
-        echo " 🟣 \033[95m[branch:staged]"
+        echo "\e[32;105m\uE0B0\e[0m\e[30;105m [branch:staged] \e[0m\e[95m\uE0B0\e[0m"
     elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
-        echo " 📤 \033[96m[branch:desynced(${commit:="unknown"})]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m [branch:desynced(${commit:="unknown"})] \e[0m\e[32m\uE0B0\e[0m"
     else
-        echo " 🌱 \033[32m[branch:current(${commit:="unknown"})]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m [branch:current(${commit:="unknown"})] \e[0m\e[32m\uE0B0\e[0m"
     fi
 }
 
@@ -80,16 +80,18 @@ function dir_is_tracked() {
 
 # Displays the status of a git branch if a parent folder is git tracked
 function check_git_status() {
-    local gitbranch=""
+    local gitbranch="\e[0m\e[33m\uE0B0\e[0m"
     if $(dir_is_tracked); then
         local gitbranchstatus=$(check_branch_status)
         local checkedoutbranch=$(current_branch)
         local detached_head=$(head_detached)
 
-        gitbranch="🌿 \033[32m[git:${checkedoutbranch:=$detached_head}]$gitbranchstatus"
+        gitbranch="\e[0m\e[33;42m\uE0B0\e[0m\e[30;42m \uE0A0 [git:${checkedoutbranch:=$detached_head}] \e[0m$gitbranchstatus"
     fi
 
-    echo -e "\033[34m┌─\033[m 🌀 \033[34m[%n@%m] 📂 \033[33;1m[%~]\033[m $gitbranch \033[m \n\033[34m└➤\033[m "
+    local user=$(echo -e "\e[0;34m\uE0B2\e[0m\e[30;44m \u25C8 [%n@%m] \e[0m\e[34;43m\uE0B0\e[0m")
+    local directory=$(echo -e "\e[30;43m \u25C9 [%~] ")
+    echo -e "\e[34m┌─\e[0m$user$directory$gitbranch \n\e[34m└➤\e[0m "
 }
 
 # Checks outs selected branch
