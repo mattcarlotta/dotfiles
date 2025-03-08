@@ -20,23 +20,24 @@ keymap_set("n", "<leader>gs", vim.cmd.Git, { desc = "[G]it [S]tatus" })
 
 keymap_set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "[L]sp [R]estart" })
 
-keymap_set("n", "<leader>tt", "<cmd>TroubleToggle<cr>", { desc = "[T]rouble [T]oggle", silent = true, noremap = true })
+keymap_set("n", "<leader>tt", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+    { desc = "[T]rouble [T]oggle", silent = true, noremap = true })
 keymap_set(
     "n",
     "<leader>td",
-    "<cmd>TroubleToggle document_diagnostics<cr>",
+    "<cmd>Trouble diagnostics toggle<cr>",
     { desc = "[T]rouble [D]ocument", silent = true, noremap = true }
 )
-keymap_set(
-    "n",
-    "<leader>tw",
-    "<cmd>TroubleToggle workspace_diagnostics<cr>",
-    { desc = "[T]rouble [W]orkspace", silent = true, noremap = true }
-)
+-- keymap_set(
+--     "n",
+--     "<leader>tw",
+--     "<cmd>TroubleToggle workspace_diagnostics<cr>",
+--     { desc = "[T]rouble [W]orkspace", silent = true, noremap = true }
+-- )
 keymap_set(
     "n",
     "<leader>tf",
-    "<cmd>TroubleToggle quickfix<cr>",
+    "<cmd>Trouble qflist toggle<cr>",
     { desc = "[T]rouble Quick [F]ix", silent = true, noremap = true }
 )
 

@@ -27,7 +27,7 @@ require("lazy").setup({
         build = ":TSUpdate",
         dependencies = {
             "JoosepAlviste/nvim-ts-context-commentstring",
-        }
+        },
     },
     {
         "windwp/nvim-autopairs",
@@ -42,7 +42,7 @@ require("lazy").setup({
         "folke/trouble.nvim",
         config = function()
             require("trouble").setup({
-                icons = false,
+                icons = {},
                 -- your configuration comes here
                 -- or leave it empty to use the default settings
                 -- refer to the configuration section below
@@ -54,10 +54,11 @@ require("lazy").setup({
         lazy = false,
         -- Enable `lukas-reineke/indent-blankline.nvim`
         -- See `:help indent_blankline.txt`
-        opts = {
-            char = "┊",
-            show_trailing_blankline_indent = false,
-        },
+        main = "ibl",
+        -- opts = {
+        --     char = "┊",
+        --     show_trailing_blankline_indent = false,
+        -- },
     },
 
     -- "gc" to comment visual regions/lines
@@ -104,27 +105,28 @@ require("lazy").setup({
         },
     },
     {
-        "zbirenbaum/neodim",
-        event = "LspAttach",
-        config = function()
-            require("neodim").setup({
-                alpha = 0.5,
-                blend_color = "#000000",
-                update_in_insert = {
-                    enable = true,
-                    delay = 100,
-                },
-                -- hide = {
-                --     virtual_text = true,
-                --     signs = true,
-                --     underline = true,
-                -- }
-            })
-        end,
+        "stevearc/conform.nvim",
+        opts = {
+            formatters_by_ft = {
+                lua = { "stylua" },
+                go = { "goimports", "gofmt" },
+                javascript = { "prettierd", "prettier", stop_after_first = true },
+                javascripteact = { "prettierd", "prettier", stop_after_first = true },
+                typescript = { "prettierd", "prettier", stop_after_first = true },
+                typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+            },
+            default_format_opts = {
+                lsp_format = "fallback",
+            },
+            format_on_save = {
+                lsp_format = "fallback",
+                timeout_ms = 500,
+            },
+        },
     },
     {
         "nvim-lualine/lualine.nvim",
         dependencies = { "kyazdani42/nvim-web-devicons", opt = true },
     },
-    "jay-babu/mason-null-ls.nvim"
+    "jay-babu/mason-null-ls.nvim",
 })
