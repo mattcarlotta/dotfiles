@@ -3,8 +3,6 @@ vim.g.mapleader = " "
 local keymap_set = vim.keymap.set
 
 keymap_set("n", "<leader>pv", vim.cmd.Ex, { desc = "Open file explorer" })
-keymap_set("n", "<leader>sk", "<cmd>Telescope keymaps<CR>", { desc = "[S]earch [K]eymaps" })
-keymap_set("n", "<leader>pc", "<cmd>PackerSync<CR>", { desc = "[P]acker syn[C]" })
 
 -- window splitting vertical/horiztonal
 keymap_set("n", "<leader>sv", "<C-w>v", { desc = "[S]plit [V]ertical" })
@@ -20,29 +18,6 @@ keymap_set("n", "<leader>gs", vim.cmd.Git, { desc = "[G]it [S]tatus" })
 
 keymap_set("n", "<leader>lr", "<cmd>LspRestart<CR>", { desc = "[L]sp [R]estart" })
 
-keymap_set("n", "<leader>tt", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
-    { desc = "[T]rouble [T]oggle", silent = true, noremap = true })
-keymap_set(
-    "n",
-    "<leader>td",
-    "<cmd>Trouble diagnostics toggle<cr>",
-    { desc = "[T]rouble [D]ocument", silent = true, noremap = true }
-)
--- keymap_set(
---     "n",
---     "<leader>tw",
---     "<cmd>TroubleToggle workspace_diagnostics<cr>",
---     { desc = "[T]rouble [W]orkspace", silent = true, noremap = true }
--- )
-keymap_set(
-    "n",
-    "<leader>tf",
-    "<cmd>Trouble qflist toggle<cr>",
-    { desc = "[T]rouble Quick [F]ix", silent = true, noremap = true }
-)
-
-keymap_set("n", "<leader>u", vim.cmd.UndotreeToggle)
-
 -- regex find and replace all
 keymap_set("n", "<leader>rf", ":%s/", { desc = "[R]egex applies to [F]ile" })
 -- regex find and replace current line
@@ -50,13 +25,6 @@ keymap_set("n", "<leader>rl", ":s/", { desc = "[R]egex applies to current [L]ine
 
 -- format
 keymap_set("n", "<leader>fd", vim.lsp.buf.format, { desc = "[F]ormat using [D]efault formatter" })
-keymap_set("n", "<leader>fl", function()
-    vim.lsp.buf.format({
-        filter = function(client)
-            return client.name == "null-ls"
-        end,
-    })
-end, { desc = "[F]ormat using [L]SP formatter" })
 
 -- move selection up or down
 keymap_set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Moves highlighted selection up" })

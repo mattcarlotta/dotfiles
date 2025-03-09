@@ -4,7 +4,9 @@ vim.g.ayu_extended_palette = true
 
 local opt = vim.opt
 
-opt.guicursor = ""
+opt.guicursor = "n-c:block,v:hor1,i-ci-ve:ver25,r-cr:hor20,o:hor50"
+
+-- opt.guicursor = ""
 opt.nu = true
 opt.relativenumber = true
 opt.tabstop = 4
