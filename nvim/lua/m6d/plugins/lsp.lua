@@ -29,7 +29,7 @@ return {
 			},
 			format_on_save = {
 				lsp_format = "fallback",
-				timeout_ms = 500,
+				timeout_ms = 1000,
 			},
 		})
 		local cmp = require("cmp")
@@ -94,6 +94,9 @@ return {
 
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }
 
+		-- Load snippets from a directory
+		require("luasnip.loaders.from_vscode").lazy_load()
+
 		cmp.setup({
 			snippet = {
 				expand = function(args)
@@ -103,7 +106,10 @@ return {
 			mapping = cmp.mapping.preset.insert({
 				["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
 				["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-				["<CR>"] = cmp.mapping.confirm({ select = true }),
+				["<CR>"] = cmp.mapping.confirm({
+					behavior = cmp.ConfirmBehavior.Replace,
+					select = true,
+				}),
 				["<C-y>"] = cmp.mapping.confirm({ select = true }),
 				["<C-Space>"] = cmp.mapping.complete(),
 			}),
