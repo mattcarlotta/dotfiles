@@ -1,6 +1,6 @@
 vim.o.completeopt = "menuone,noselect"
-vim.g.ayucolor = "dark"
-vim.g.ayu_extended_palette = true
+-- vim.g.ayucolor = "dark"
+-- vim.g.ayu_extended_palette = true
 
 local opt = vim.opt
 

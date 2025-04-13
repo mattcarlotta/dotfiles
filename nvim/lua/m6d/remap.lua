@@ -2,7 +2,14 @@ vim.g.mapleader = " "
 
 local keymap_set = vim.keymap.set
 
-keymap_set("n", "<leader>pv", vim.cmd.Ex, { desc = "Open file explorer" })
+keymap_set(
+	"n",
+	"<leader>pv",
+	"<cmd>Neotree position=current reveal=true reveal_force_cwd=true<CR>",
+	{ desc = "Open file explorer" }
+)
+
+keymap_set("n", "<leader>pd", "<cmd>Neotree position=current<CR>", { desc = "Open file explorer" })
 
 -- window splitting vertical/horiztonal
 keymap_set("n", "<leader>sv", "<C-w>v", { desc = "[S]plit [V]ertical" })
@@ -60,5 +67,37 @@ keymap_set("n", "<leader>j", "<cmd>lprev<CR>zz")
 keymap_set("n", "<leader>x", "<cmd>!chmod +x %<CR>", { desc = "Changes file to be executable", silent = true })
 
 keymap_set("n", "<leader><leader>", function()
-    vim.cmd("so")
+	vim.cmd("so")
 end, { desc = "Sources current file" })
+
+keymap_set("n", "<leader>cu", function()
+	local modified_buffers = {}
+	local qf_list = {}
+
+	for buf = 1, vim.fn.bufnr("$") do
+		if vim.fn.bufexists(buf) == 1 and vim.fn.getbufvar(buf, "&modified") == 1 then
+			local filename = vim.fn.bufname(buf)
+			table.insert(modified_buffers, filename)
+
+			-- Create quickfix entry
+			table.insert(qf_list, {
+				filename = filename ~= "" and filename or "[No Name]",
+				lnum = 1, -- Set to first line
+				col = 1, -- Set to first column
+				text = "Unsaved changes",
+			})
+		end
+	end
+
+	if #modified_buffers == 0 then
+		print("No unsaved files!")
+	else
+		-- Set the quickfix list
+		vim.fn.setqflist(qf_list, "r")
+
+		-- Open the quickfix window
+		vim.cmd("copen")
+
+		print(string.format("Found %d unsaved files (added to quickfix list)", #modified_buffers))
+	end
+end, { desc = "Check for unsaved files" })
