@@ -4,7 +4,17 @@ return {
 	-- See `:help indent_blankline.txt`
 	main = "ibl",
 	config = function()
-		require("ibl").setup()
+		require("ibl").update({
+			indent = {
+				char = "¦",
+			},
+			scope = {
+				enabled = true,
+				show_start = false,
+				char = "▎",
+				-- highlight = { "CursorLineNr" },
+			},
+		})
 	end,
 	-- opts = {
 	--     char = "┊",
