@@ -9,6 +9,11 @@ return {
 	},
 	lazy = false, -- neo-tree will lazily load itself
 	opts = {
+		filesystem = {
+			filtered_items = {
+				visible = true,
+			},
+		},
 		window = {
 			position = "current",
 		},

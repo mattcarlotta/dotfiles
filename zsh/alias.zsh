@@ -11,11 +11,18 @@ alias bab='cp ~/alias.sh ~/Documents/dotfiles/bash/alias.sh; echo Backed up bash
 alias bcb='cp ~/custom-fns.sh ~/Documents/dotfiles/bash/custom-fns.sh; echo Backed up bash custom fns'              # bcb:          Backup bash custom fns script
 alias sp='source ~/.bash_profile'                                                                                   # sp:           Sources bash profile
 
+#### I3 CONFIG
+alias bi3c='cp -R ~/.config/i3/* ~/Documents/dotfiles/i3; echo Backed up i3 configs'                                # bi3c:          Backup i3 directory
+alias i3bc='nvim ~/.config/i3/i3blocks.conf'                                                                        # i3bc:         Edit i3 block config
+alias i3c='nvim ~/.config/i3/config'                                                                                # i3b:          Edit i3 config
+
 #### ZSH PROFILE ALIASES
 alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
-alias bz='cp ~/.zshrc ~/Documents/dotfiles/zsh/.zshrc; echo Backed up zsh profile'                                  # bz:           Backup zsh profile
-alias bza='cp ~/alias.zsh ~/Documents/dotfiles/zsh/alias.zsh; echo Backed up zsh alias'                             # bza:          Backup zsh alias script
-alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/zsh/custom-fns.zsh; echo Backed up zsh custom fns'              # bzc:          Backup zsh custom fns script
+alias za='nvim ~/alias.zsh'                                                                                         # zb:           Edit zsh aliases
+alias zc='nvim ~/custom-fns.zsh'                                                                                    # zc:           Edit zsh custom-fns
+alias bz='cp ~/.zshrc ~/Documents/dotfiles/arch/zsh/.zshrc; echo Backed up zsh profile'                             # bz:           Backup zsh profile
+alias bza='cp ~/alias.zsh ~/Documents/dotfiles/arch/zsh/alias.zsh; echo Backed up zsh alias'                        # bza:          Backup zsh alias script
+alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/arch/zsh/custom-fns.zsh; echo Backed up zsh custom fns'         # bzc:          Backup zsh custom fns script
 alias sz='source ~/.zshrc'                                                                                          # sz:           Sources zsh profile
 
 ### DIRECTORY ALIASES
@@ -25,7 +32,7 @@ alias cdd="cd ~/Documents"                                                      
 alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
 alias cddw="cd ~/Downloads"                                                                                         # cddw:         Change directory in Downloads
 alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
-alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
+# alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
 
 ### PROCESS ALIASES
 alias fpid='lsof -i'                                                                                                # fpid:         Finds the process id running on specified port
@@ -55,7 +62,7 @@ alias matt='ssh-add ~/.ssh/id_rsa'                                              
 alias ga='git add .'                                                                                                # ga:           Tracks new files for git
 alias gb='git branch'                                                                                               # gb:           Lists all local branches
 alias gba='git branch -a'                                                                                           # gba:          Lists all local and remote branches
-alias gc='git commit -am'                                                                                           # gc:           Commits new files for git
+alias gc='git commit'                                                                                               # gc:           Opens editor to add a commit message
 alias gca='git commit --amend'                                                                                      # gca:          Ammends staged changes to last commits
 alias gcan='git commit --amend --no-edit'                                                                           # gcan:         Ammends staged changes to last commits without editing commit message
 alias gcan='git commit --amend --no-edit && gpush -f'                                                               # gcan:         Ammends staged changes to last commits without editing commit message and pushes up to remote
@@ -131,11 +138,12 @@ alias cconf='sudo nvim /etc/conky/conky.conf'                                   
 ### TMUX ALIASES
 alias t='tmux'                                                                                                      # t:            Runs tmux
 alias ta='tmux a'                                                                                                   # ta:           Runs tmux attach
+alias td='tmux detach'                                                                                              # td:           Runs tmux dettach
 alias tk='tmux kill-server'                                                                                         # tk:           Kills tmux server
 alias tw='tmux neww'                                                                                                # tw:           New window
 alias twdc='tmux nnew -d -c'                                                                                        # twdc:         New window at directory
-alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions 
-alias ts='tmux-sessionizer'                                                                                         # f:            Runs tmux-sessioner script
+alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions
+alias ts='~/tmux-sessionizer'                                                                                       # ts:           Runs tmux-sessioner script
 alias tconf='nvim ~/.tmux.conf'                                                                                     # tconf:        Edit tmux config
 alias tback='cp ~/.tmux.conf ~/Documents/dotfiles/tmux; echo Backed up tmux conf'                                   # tback:        Back up tmux conf
 

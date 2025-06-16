@@ -2,6 +2,9 @@
 #
 source ~/custom-fns.zsh
 source ~/alias.zsh
+source $HOME/.cargo/env
+# bun completions
+[ -s "/Users/mattcarlotta/.bun/_bun" ] && source "/Users/mattcarlotta/.bun/_bun"
 
 setopt PROMPT_SUBST
 autoload -Uz promptinit
@@ -15,19 +18,27 @@ setopt histignorealldups sharehistory
 bindkey -e
 
 # Keep 1000 lines of history within the shell and save it to ~/.zsh_history:
+HISTFILESIZE=10000
 HISTSIZE=5000
 SAVEHIST=2000
-HISTFILE=~/.zsh_history
-export GOROOT=/usr/lib/go
-export GOPATH=$HOME/go
-export PATH="$PATH:$GOPATH/bin"
+export HISTFILE=~/.zsh_history
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export EDITOR=/usr/local/bin/nvim
+export EDITOR=/opt/homebrew/bin/nvim
+export GOPATH=$HOME/go
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$PATH:/usr/local/bin:/usr/local/bin:/usr/local/go/bin:$GOPATH/bin:/Library/PostgreSQL/15/bin:$BUN_INSTALL/bin:/opt/homebrew/opt/sqlite/bin"
+export TERM=xterm-256color
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 
 # install zsh-syntax-highlighting zsh-autosuggestions
-source $(dpkg -L zsh-autosuggestions | grep 'zsh$')
-source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# source $(dpkg -L zsh-autosuggestions | grep 'zsh$')
+# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# aplugins=(zsh-autosuggestions)
 
 # Use modern completion system
 # autoload -Uz compinit
@@ -50,3 +61,12 @@ source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#)*=0=01;31'
 # zstyle ':completion:*:kill:*' command 'ps -u $USER -o pid,%cpu,tty,cputime,cmd'
+
+# pnpm
+export PNPM_HOME="/home/m6d/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+

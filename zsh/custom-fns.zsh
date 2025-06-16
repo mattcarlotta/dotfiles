@@ -36,7 +36,7 @@ function delete_staging_branch() {
   git branch -D staging &>/dev/null
 }
 
-# Displays the file status of a git branch 
+# Displays the file status of a git branch
 function check_branch_status() {
     local unstaged=$(g_stat | grep -e "Changes not staged" -e "Untracked files")
     local staged=$(g_stat | grep -e "Changes to be committed")
@@ -47,15 +47,15 @@ function check_branch_status() {
     local commit=$(git rev-parse --short HEAD 2>/dev/null)
 
     if [ ! -z "$detached_head" ]; then
-        echo " ✂️  \033[96m[branch:detached]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m  [branch:detached] \e[0m\e[32m\uE0B0\e[0m"
     elif [ ! -z "$unstaged" ]; then
-        echo " 🔴 \033[91m[branch:unstaged]"
+        echo "\e[32;41m\uE0B0\e[0m\e[30;41m [branch:unstaged] \e[0m\e[31m\uE0B0\e[0m"
     elif [ ! -z "$staged" ]; then
-        echo " 🟣 \033[95m[branch:staged]"
+        echo "\e[32;105m\uE0B0\e[0m\e[30;105m [branch:staged] \e[0m\e[95m\uE0B0\e[0m"
     elif [ ! -z "$remote_branch" ] && [ ! -z "$unpushed_commits" ]; then
-        echo " 📤 \033[96m[branch:desynced(${commit:="unknown"})]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m [branch:desynced(${commit:="unknown"})] \e[0m\e[32m\uE0B0\e[0m"
     else
-        echo " 🌱 \033[32m[branch:current(${commit:="unknown"})]"
+        echo "\e[0m\e[30;42m\uE0B1\e[0m\e[30;42m [branch:current(${commit:="unknown"})] \e[0m\e[32m\uE0B0\e[0m"
     fi
 }
 
@@ -80,16 +80,18 @@ function dir_is_tracked() {
 
 # Displays the status of a git branch if a parent folder is git tracked
 function check_git_status() {
-    local gitbranch=""
+    local gitbranch="\e[0m\e[33m\uE0B0\e[0m"
     if $(dir_is_tracked); then
         local gitbranchstatus=$(check_branch_status)
         local checkedoutbranch=$(current_branch)
         local detached_head=$(head_detached)
 
-        gitbranch="🌿 \033[32m[git:${checkedoutbranch:=$detached_head}]$gitbranchstatus"
+        gitbranch="\e[0m\e[33;42m\uE0B0\e[0m\e[30;42m \uE0A0 [git:${checkedoutbranch:=$detached_head}] \e[0m$gitbranchstatus"
     fi
 
-    echo -e "\033[34m┌─\033[m 🌀 \033[34m[%n@%m] 📂 \033[33;1m[%~]\033[m $gitbranch \033[m \n\033[34m└➤\033[m "
+    local user=$(echo -e "\e[0;34m\uE0B2\e[0m\e[30;44m \u25C8 [%n@%m] \e[0m\e[34;43m\uE0B0\e[0m")
+    local directory=$(echo -e "\e[30;43m \u25C9 [%~] ")
+    echo -e "\e[34m┌─\e[0m$user$directory$gitbranch \n\e[34m└➤\e[0m "
 }
 
 # Checks outs selected branch
@@ -121,16 +123,39 @@ function gpush() {
 
 # Fuzzy finder for searching through bash history and invokes selection
 function sbh() {
-    local selection=$(history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
+    local selection=$(cat ~/.zsh_history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
     local selectiontext="${selection:0:40}"
 
     if [[ ! -z $selection ]]; then
-        if (( ${#selection} > 40 )); then
-            selectiontext+="... +$(expr length "${selection: 40}") characters" 
-        fi
-        echo -e "✨ Invoked \033[35;1m$selectiontext\033[m from bash history! ✨"
+        # if (( ${#selection} > 40 )); then
+        #     selectiontext+="... +$(expr length "${selection: 40}") characters"
+        # fi
+        echo -e "✨ Invoked \033[35;1m$selection\033[m from zsh history! ✨"
         eval "$selection"
-    fi   
+    fi
+}
+
+# Rebases current branch with specific upstream origin branch
+function rbo() {
+    local branch=$1
+    local stream="origin"
+
+    if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+    git fetch $stream
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to fetch $stream $branch"
+        return
+    fi
+
+    git rebase $stream/$branch
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to rebase $stream $branch"
+        return
+    fi
 }
 
 # Rebases current branch with upstream
@@ -171,7 +196,7 @@ function rbm() {
 
 # Pulls in a remote PR branch into local repo
 function pulldown() {
-   local pull_id=$1 
+   local pull_id=$1
    local branch=$2
 
    if [[ -z $pull_id ]]; then
@@ -193,6 +218,32 @@ function pulldown() {
    git checkout $branch
 }
 
+# Pushes current branch up to staging
+function stage() {
+    local branch=$(current_branch)
+
+    if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
+        print_not_git_tracked
+        return
+    fi
+
+    # if [ "$1" == "rebase" ]; then
+    #     rbb
+    # fi
+
+    delete_staging_branch
+    git checkout -b staging
+
+    git push -f origin staging
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to push rebase commits to remote staging branch"
+        return
+    fi
+
+    git checkout $branch
+    delete_staging_branch
+}
+
 # Deletes a local branch
 function gbd() {
     if [[ ! -z $(not_git_tracked) ]]; then
@@ -203,7 +254,7 @@ function gbd() {
     local branch=$(git branch | awk '{ print $0 }' | sed -e 's/\*/ /g' -e 's/[[:space:]]//g' | fzf)
 
     if [[ ! -z "$branch" ]]; then
-       git checkout main 
+       git checkout main
        git branch -D $branch
     fi
 }
@@ -218,7 +269,7 @@ function gchrb() {
     local branch=$(git branch -a | awk '{ print $0 }' | sed -e 's/\*/ /g' -e 's/[[:space:]]//g' | grep -e 'remotes/upstream' | fzf)
 
     if [[ ! -z "$branch" ]]; then
-       local remote_branch=$(echo $branch | sed 's/remotes\/upstream\///g') 
+       local remote_branch=$(echo $branch | sed 's/remotes\/upstream\///g')
        git checkout -b $remote_branch upstream/$remote_branch
     fi
 }
@@ -231,4 +282,8 @@ function rp() {
     else
         echo "AWK is not located at /usr/bin/awk" # for the truly paranoid
     fi
+}
+
+function gsync() {
+    git fetch --all && git pull --all && git branch -r | grep -v '\->' | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
 }
