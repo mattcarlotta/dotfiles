@@ -1,15 +1,15 @@
 return {
 	{
-		"nvim-lua/plenary.nvim",
-		name = "plenary",
-	},
-	{
 		"mattcarlotta/depths.nvim",
 		lazy = false,
 		priority = 1000,
 		config = function()
 			require("depths").setup()
 		end,
+	},
+	{
+		"nvim-lua/plenary.nvim",
+		name = "plenary",
 	},
 	-- {
 	-- 	"Luxed/ayu-vim",

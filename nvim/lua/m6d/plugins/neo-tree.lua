@@ -8,15 +8,24 @@ return {
 		-- {"3rd/image.nvim", opts = {}}, -- Optional image support in preview window: See `# Preview Mode` for more information
 	},
 	lazy = false, -- neo-tree will lazily load itself
-	opts = {
-		filesystem = {
-			filtered_items = {
-				visible = true,
+	config = function()
+		require("neo-tree").setup({
+			filesystem = {
+				filtered_items = {
+					visible = true,
+				},
 			},
-		},
-		window = {
-			position = "current",
-		},
-		-- fill any relevant options here
-	},
+			window = {
+				position = "current",
+			},
+			event_handlers = {
+				{
+					event = "neo_tree_buffer_enter",
+					handler = function()
+						vim.opt.relativenumber = true
+					end,
+				},
+			},
+		})
+	end,
 }

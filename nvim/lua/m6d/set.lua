@@ -1,3 +1,4 @@
+vim.o.winborder = "rounded"
 vim.o.completeopt = "menuone,noselect"
 -- vim.g.ayucolor = "dark"
 -- vim.g.ayu_extended_palette = true
