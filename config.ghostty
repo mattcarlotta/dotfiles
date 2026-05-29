@@ -1,0 +1,45 @@
+
+# font-family = FantasqueSansMono Nerd Font
+font-family = JetBrainsMono Nerd Font
+font-size = 22
+font-style = Medium
+bold-is-bright = false
+
+background = #000000
+foreground = #ffffff
+
+cursor-style = block
+cursor-style-blink = true
+cursor-color = #cccccc
+cursor-text = #ffffff
+
+selection-background = #314f78
+selection-foreground = #000000
+
+palette = 0=#232323
+palette = 1=#ff000f
+palette = 2=#8ce10b
+palette = 3=#ffb900
+palette = 4=#008df8
+palette = 5=#6d43a6
+palette = 6=#00d8eb
+palette = 7=#ffffff
+palette = 8=#444444
+palette = 9=#ff2740
+palette = 10=#abe15b
+palette = 11=#ffd242
+palette = 12=#0092ff
+palette = 13=#9a5feb
+palette = 14=#67fff0
+palette = 15=#ffffff
+
+window-width = 120
+window-height = 32
+background-opacity = 1
+macos-option-as-alt = false
+mouse-reporting = true
+maximize = true
+
+confirm-close-surface = false
+
+term = xterm-256color

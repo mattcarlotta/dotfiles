@@ -32,6 +32,11 @@ keymap_set("n", "<leader>rl", ":s/", { desc = "[R]egex applies to current [L]ine
 
 -- format
 keymap_set("n", "<leader>fd", vim.lsp.buf.format, { desc = "[F]ormat using [D]efault formatter" })
+keymap_set("n", "<leader>fw", function()
+	require("conform").format({ lsp_format = "fallback" })
+	vim.cmd("w")
+end, { desc = "[F]ormat and [W]rite" })
+keymap_set("n", "<leader>nw", "<cmd>noa w<CR>", { desc = "[N]o format [W]rite" })
 
 -- move selection up or down
 keymap_set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Moves highlighted selection up" })
