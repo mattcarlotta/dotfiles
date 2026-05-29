@@ -2,7 +2,11 @@
 
 My setup to get a DE up and running.
 
-![](https://raw.githubusercontent.com/mattcarlotta/dotfiles/main/nvim.png)
+![](https://raw.githubusercontent.com/mattcarlotta/dotfiles/main/screenshot.png)
+
+## Terminal
+
+[ghostty](https://ghostty.org/download)
 
 ## Editor
 
@@ -34,7 +38,7 @@ sudo apt-get install tmux
 
 ## JS/TS
 
-- [nodejs](https://nodejs.org/en/)
+- [nodejs](https://nodejs.org/en/download)
 
 ```DOSINI
 sudo apt-get install curl python-software-properties software-properties-common
