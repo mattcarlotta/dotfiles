@@ -23,7 +23,7 @@ alias zc='nvim ~/custom-fns.zsh'                                                
 alias bz='cp ~/.zshrc ~/Documents/dotfiles/arch/zsh/.zshrc; echo Backed up zsh profile'                             # bz:           Backup zsh profile
 alias bza='cp ~/alias.zsh ~/Documents/dotfiles/arch/zsh/alias.zsh; echo Backed up zsh alias'                        # bza:          Backup zsh alias script
 alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/arch/zsh/custom-fns.zsh; echo Backed up zsh custom fns'         # bzc:          Backup zsh custom fns script
-alias sz='source ~/.zshrc'                                                                                          # sz:           Sources zsh profile
+alias sz='source ~/.zshrc && echo "Sourced ZSH Profile"'                                                            # sz:           Sources zsh profile
 
 ### DIRECTORY ALIASES
 alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level
@@ -32,7 +32,7 @@ alias cdd="cd ~/Documents"                                                      
 alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
 alias cddw="cd ~/Downloads"                                                                                         # cddw:         Change directory in Downloads
 alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
-alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
+# alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
 
 ### PROCESS ALIASES
 alias fpid='lsof -i'                                                                                                # fpid:         Finds the process id running on specified port
@@ -120,10 +120,23 @@ alias yad='pnpm add -D'                                                         
 alias yr='pnpm rm'                                                                                                   # yr:           Remove dependency from project
 alias yo='pnpm outdated'                                                                                             # yo:           Check for outdated project dependencies
 alias yui='pnpm update -i'                                                                                           # yui:          Upgrade outdated project dependencies interactively
+alias yul='pnpm update --latest'                                                                                     # yul:          Upgrade project dependencies automatically
 alias yb='pnpm run build'                                                                                            # yb:           Runs npm run build script command
 alias yd='pnpm run dev'                                                                                              # yd:           Runs npm run dev script command
 alias ys='pnpm start'                                                                                                # ys:           Runs npm start script command
 alias yrun='pnpm run'                                                                                                # yrun:         Runs npm start script command
+
+
+### SUPABASE ALIASAS
+alias sb='supabase'
+alias sbd='supabase db'
+alias sbdf='supabase db diff --file'
+alias sbdr='supabase db reset'
+alias sbpl='supabase projects list'
+alias sblp='supabase link --project-ref'
+alias sbmn='supabase migration new'
+alias sbgt='supabase gen types typescript --local --schema public > database.types.ts'
+
 
 ### CARGO ALIASES
 alias crun='cargo run'                                                                                              # crun:         Cargo run
@@ -138,10 +151,11 @@ alias cconf='sudo nvim /etc/conky/conky.conf'                                   
 ### TMUX ALIASES
 alias t='tmux'                                                                                                      # t:            Runs tmux
 alias ta='tmux a'                                                                                                   # ta:           Runs tmux attach
+alias td='tmux detach'                                                                                              # td:           Runs tmux dettach
 alias tk='tmux kill-server'                                                                                         # tk:           Kills tmux server
 alias tw='tmux neww'                                                                                                # tw:           New window
 alias twdc='tmux nnew -d -c'                                                                                        # twdc:         New window at directory
-alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions 
+alias tl='tmux list-sessions'                                                                                       # tl:           Lists active tmux sessions
 alias ts='~/tmux-sessionizer'                                                                                       # ts:           Runs tmux-sessioner script
 alias tconf='nvim ~/.tmux.conf'                                                                                     # tconf:        Edit tmux config
 alias tback='cp ~/.tmux.conf ~/Documents/dotfiles/tmux; echo Backed up tmux conf'                                   # tback:        Back up tmux conf

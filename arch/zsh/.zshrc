@@ -2,6 +2,9 @@
 #
 source ~/custom-fns.zsh
 source ~/alias.zsh
+# source $HOME/.cargo/env
+# bun completions
+[ -s "/Users/mattcarlotta/.bun/_bun" ] && source "/Users/mattcarlotta/.bun/_bun"
 
 setopt PROMPT_SUBST
 autoload -Uz promptinit
@@ -19,17 +22,22 @@ HISTFILESIZE=10000
 HISTSIZE=5000
 SAVEHIST=2000
 export HISTFILE=~/.zsh_history
-export GOROOT=/usr/lib/go
-export GOPATH=$HOME/go
-export PATH="$PATH:$GOPATH/bin"
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
-export EDITOR=/usr/local/bin/nvim
+export EDITOR=/opt/homebrew/bin/nvim
+export GOPATH=$HOME/go
+export BUN_INSTALL="$HOME/.bun"
+export CARGO=$HOME/.cargo
+export PATH="$PATH:/usr/local/bin:/usr/local/bin:/usr/local/go/bin:$GOPATH/bin:/Library/PostgreSQL/15/bin:$BUN_INSTALL/bin:/opt/homebrew/opt/sqlite/bin:$CARGO/bin:$HOME/.local/bin"
+export TERM=xterm-256color
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 
 # install zsh-syntax-highlighting zsh-autosuggestions
 # source $(dpkg -L zsh-autosuggestions | grep 'zsh$')
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
 # source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source $(brew --prefix)/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # aplugins=(zsh-autosuggestions)
 
@@ -62,3 +70,9 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
+
+# The following lines have been added by Docker Desktop to enable Docker CLI completions.
+fpath=(/Users/mattcarlotta/.docker/completions $fpath)
+autoload -Uz compinit
+compinit
+# End of Docker CLI completions
