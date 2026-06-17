@@ -6,7 +6,7 @@ source ~/custom-fns.zsh
 source ~/alias.zsh
 # source $HOME/.cargo/env
 # bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+# [ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 setopt PROMPT_SUBST
 autoload -Uz promptinit
@@ -27,8 +27,7 @@ export HISTFILE=~/.zsh_history
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export EDITOR=/opt/homebrew/bin/nvim
-export BUN_INSTALL=$HOME/.bun
-path+=("$BUN_INSTALL/bin" "/opt/homebrew/opt/sqlite/bin" "$HOME/.local/bin")
+path+=("$HOME/.local/bin")
 export TERM=xterm-256color
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
