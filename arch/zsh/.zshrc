@@ -28,7 +28,8 @@ export EDITOR=/opt/homebrew/bin/nvim
 export GOPATH=$HOME/go
 export BUN_INSTALL="$HOME/.bun"
 export CARGO=$HOME/.cargo
-export PATH="$PATH:/usr/local/bin:/usr/local/bin:/usr/local/go/bin:$GOPATH/bin:/Library/PostgreSQL/15/bin:$BUN_INSTALL/bin:/opt/homebrew/opt/sqlite/bin:$CARGO/bin:$HOME/.local/bin"
+typeset -U path
+export PATH="$PATH:/usr/local/go/bin:$GOPATH/bin:/Library/PostgreSQL/15/bin:$BUN_INSTALL/bin:/opt/homebrew/opt/sqlite/bin:$CARGO/bin:$HOME/.local/bin"
 export TERM=xterm-256color
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
