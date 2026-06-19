@@ -27,7 +27,7 @@ export HISTFILE=~/.zsh_history
 export CLICOLOR=1
 export LSCOLORS=ExFxBxDxCxegedabagacad
 export EDITOR=/opt/homebrew/bin/nvim
-path+=("$HOME/.local/bin")
+path+=("$HOME/.local/bin" "$HOME/.cargo/bin")
 export TERM=xterm-256color
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
