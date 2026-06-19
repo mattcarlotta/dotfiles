@@ -1,5 +1,5 @@
 # Prints an error to shell
-function print_error() {
+print_error() {
     local error=$1
     local error_message="\n⛔ \033[91;1mERROR: $error"
 
@@ -7,37 +7,37 @@ function print_error() {
 }
 
 # Prints not a git tracked folder to stdout
-function print_not_git_tracked() {
+print_not_git_tracked() {
   print_error "Unable to locate git status -- you may be not in a git tracked folder"
 }
 
 # Git status
-function g_stat() {
+g_stat() {
   echo "$(git status --ignore-submodules=all 2>&1)"
 }
 
 # Check if git tracked
-function not_git_tracked() {
+not_git_tracked() {
   echo "$(g_stat | grep "not a git repository")"
 }
 
 # Current branch
-function current_branch() {
+current_branch() {
   echo "$(g_stat | grep -e "On branch" | awk '{ print $3 }')"
 }
 
 # Detached head
-function head_detached() {
+head_detached() {
   echo "$(g_stat | grep -e "HEAD detached" | awk '{ print $4 }')"
 }
 
 # Deletes staging branch
-function delete_staging_branch() {
+delete_staging_branch() {
   git branch -D staging &>/dev/null
 }
 
 # Displays the file status of a git branch
-function check_branch_status() {
+check_branch_status() {
     local unstaged=$(g_stat | grep -e "Changes not staged" -e "Untracked files")
     local staged=$(g_stat | grep -e "Changes to be committed")
     local branch=$(current_branch)
@@ -60,7 +60,7 @@ function check_branch_status() {
 }
 
 # Parses the parent directories of the current working directory to determine if any are git tracked
-function dir_is_tracked() {
+dir_is_tracked() {
     IFS='\/'
     read -rA CWD<<< "$PWD"
     IFS=''
@@ -79,7 +79,7 @@ function dir_is_tracked() {
 }
 
 # Displays the status of a git branch if a parent folder is git tracked
-function check_git_status() {
+check_git_status() {
     local gitbranch="\e[0m\e[33m\uE0B0\e[0m"
     if $(dir_is_tracked); then
         local gitbranchstatus=$(check_branch_status)
@@ -95,7 +95,7 @@ function check_git_status() {
 }
 
 # Checks outs selected branch
-function gbs() {
+gbs() {
     if [[ ! -z $(not_git_tracked) ]]; then
         print_not_git_tracked
         return
@@ -109,7 +109,7 @@ function gbs() {
 }
 
 # Pushes commits up to origin using currently selected branch
-function gpush() {
+gpush() {
     local branch=$(current_branch)
 
     if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
@@ -122,7 +122,7 @@ function gpush() {
 }
 
 # Fuzzy finder for searching through bash history and invokes selection
-function sbh() {
+sbh() {
     local selection=$(cat ~/.zsh_history | awk '{$1="";print $0}' | awk '!a[$0]++' | tac | fzf | sed 's/^[[:space:]]*//')
     local selectiontext="${selection:0:40}"
 
@@ -136,7 +136,7 @@ function sbh() {
 }
 
 # Rebases current branch with specific upstream origin branch
-function rbo() {
+rbo() {
     local branch=$1
     local stream="origin"
 
@@ -159,7 +159,7 @@ function rbo() {
 }
 
 # Rebases current branch with upstream
-function rbb() {
+rbb() {
     local branch=$(current_branch)
     local stream=${1:-"origin"}
 
@@ -182,10 +182,14 @@ function rbb() {
 }
 
 # Rebases the forked headless branch and pushes updates to Github
-function rbm() {
+rbm() {
     git checkout main
 
     rbb
+    if [[ $? -ne 0 ]]; then
+        print_error "Failed to rebase main"
+        return
+    fi
 
     git push origin main -f
     if [[ $? -ne 0 ]]; then
@@ -195,7 +199,7 @@ function rbm() {
 }
 
 # Pulls in a remote PR branch into local repo
-function pulldown() {
+pulldown() {
    local pull_id=$1
    local branch=$2
 
@@ -219,7 +223,7 @@ function pulldown() {
 }
 
 # Pushes current branch up to staging
-function stage() {
+stage() {
     local branch=$(current_branch)
 
     if [[ ! -z $(not_git_tracked) || -z $branch ]]; then
@@ -245,7 +249,7 @@ function stage() {
 }
 
 # Deletes a local branch
-function gbd() {
+gbd() {
     if [[ ! -z $(not_git_tracked) ]]; then
         print_not_git_tracked
         return
@@ -260,7 +264,7 @@ function gbd() {
 }
 
 # Checks out a remote branch and creates a local branch
-function gchrb() {
+gchrb() {
     if [[ ! -z $(not_git_tracked) ]]; then
         print_not_git_tracked
         return
@@ -275,7 +279,7 @@ function gchrb() {
 }
 
 # Remove duplicate entries from PATH
-function rp() {
+rp() {
     if [[ -x /usr/bin/awk ]]; then
         export PATH="$(echo "$PATH" | /usr/bin/awk 'BEGIN { RS=":"; } { sub(sprintf("%c$", 10), ""); if (A[$0]) {} else { A[$0]=1; printf(((NR==1) ?"" : ":") $0) }}')"
         echo $PATH
@@ -284,6 +288,10 @@ function rp() {
     fi
 }
 
-function gsync() {
+gsync() {
     git fetch --all && git pull --all && git branch -r | grep -v '\->' | while read remote; do git branch --track "${remote#origin/}" "$remote"; done
+}
+
+nvix() {
+    nvi "$@" | xargs -0 -r env;
 }

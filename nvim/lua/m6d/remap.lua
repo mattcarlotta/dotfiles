@@ -75,6 +75,14 @@ keymap_set("n", "<leader><leader>", function()
 	vim.cmd("so")
 end, { desc = "Sources current file" })
 
+keymap_set("n", "<leader>cmd", function()
+	local cmd = vim.fn.input("Command: ")
+	if cmd ~= "" then
+		vim.cmd("split | terminal " .. cmd)
+		keymap_set("n", "q", "<cmd>close<cr>", { buffer = true })
+	end
+end)
+
 keymap_set("n", "<leader>cu", function()
 	local modified_buffers = {}
 	local qf_list = {}

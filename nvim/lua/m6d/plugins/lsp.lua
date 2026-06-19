@@ -23,11 +23,31 @@ return {
 				javascriptreact = { "prettierd", "prettier", stop_after_first = true },
 				typescript = { "prettierd", "prettier", stop_after_first = true },
 				typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+				zig = { "zig", stop_after_first = true },
 			},
 			default_format_opts = {
 				lsp_format = "fallback",
 			},
 			format_on_save = function(bufnr)
+				if vim.tbl_contains({ "zig", "zon" }, vim.bo[bufnr].filetype) then
+					local client = vim.lsp.get_clients({ bufnr = bufnr, name = "zls" })[1]
+					if client then
+						local params = vim.tbl_extend(
+							"force",
+							vim.lsp.util.make_range_params(0, client.offset_encoding),
+							{ context = { only = { "source.organizeImports" }, diagnostics = {} } }
+						)
+						local result = vim.lsp.buf_request_sync(bufnr, "textDocument/codeAction", params, 1000)
+						for _, res in pairs(result or {}) do
+							for _, action in pairs(res.result or {}) do
+								if action.edit then
+									vim.lsp.util.apply_workspace_edit(action.edit, client.offset_encoding)
+								end
+							end
+						end
+					end
+				end
+
 				local result = require("conform").format({
 					bufnr = bufnr,
 					lsp_format = "fallback",
@@ -80,6 +100,7 @@ return {
 				},
 			},
 		})
+		vim.lsp.enable("zls")
 		vim.g.zig_fmt_parse_errors = 0
 		vim.g.zig_fmt_autosave = 0
 
@@ -138,7 +159,6 @@ return {
 				},
 			},
 		})
-
 		vim.lsp.enable("tailwindcss")
 
 		local cmp_select = { behavior = cmp.SelectBehavior.Select }

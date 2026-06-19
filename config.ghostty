@@ -42,4 +42,7 @@ maximize = true
 
 confirm-close-surface = false
 
+cursor-style = block
+shell-integration-features = no-cursor
+
 term = xterm-256color

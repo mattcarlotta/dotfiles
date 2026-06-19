@@ -1,8 +1,7 @@
 #### MISC ALIASES
 alias c='clear'                                                                                                     # c:            Clear terminal display
-alias c.='code .'                                                                                                   # c.:           Opens VSCode at directory
 alias e='exit'                                                                                                      # e:            Exit terminal
-alias cat='bat'                                                                                                     # cat:          Replace cat with bat
+# alias cat='bat'                                                                                                     # cat:          Replace cat with bat
 
 #### BASH PROFILE ALIASES
 alias bp='nvim ~/.bash_profile'                                                                                     # bp:           Edit bash profile
@@ -20,10 +19,10 @@ alias i3c='nvim ~/.config/i3/config'                                            
 alias zp='nvim ~/.zshrc'                                                                                            # zp:           Edit zsh profile
 alias za='nvim ~/alias.zsh'                                                                                         # zb:           Edit zsh aliases
 alias zc='nvim ~/custom-fns.zsh'                                                                                    # zc:           Edit zsh custom-fns
-alias bz='cp ~/.zshrc ~/Documents/dotfiles/arch/zsh/.zshrc; echo Backed up zsh profile'                             # bz:           Backup zsh profile
-alias bza='cp ~/alias.zsh ~/Documents/dotfiles/arch/zsh/alias.zsh; echo Backed up zsh alias'                        # bza:          Backup zsh alias script
-alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/arch/zsh/custom-fns.zsh; echo Backed up zsh custom fns'         # bzc:          Backup zsh custom fns script
-alias sz='source ~/.zshrc'                                                                                          # sz:           Sources zsh profile
+alias bz='cp ~/.zshrc ~/Documents/dotfiles/zsh/.zshrc; echo Backed up zsh profile'                                  # bz:           Backup zsh profile
+alias bza='cp ~/alias.zsh ~/Documents/dotfiles/zsh/alias.zsh; echo Backed up zsh alias'                             # bza:          Backup zsh alias script
+alias bzc='cp ~/custom-fns.zsh ~/Documents/dotfiles/zsh/custom-fns.zsh; echo Backed up zsh custom fns'              # bzc:          Backup zsh custom fns script
+alias sz='source ~/.zshrc && echo "Sourced ZSH Profile"'                                                            # sz:           Sources zsh profile
 
 ### DIRECTORY ALIASES
 alias ..='cd ../'                                                                                                   # ..:           Go back 1 directory level
@@ -31,7 +30,7 @@ alias ...='cd ../../'                                                           
 alias cdd="cd ~/Documents"                                                                                          # cdd:          Change directory in Documents
 alias cdde="cd ~/Desktop"                                                                                           # cdde:         Change directory in Desktop
 alias cddw="cd ~/Downloads"                                                                                         # cddw:         Change directory in Downloads
-alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
+# alias ls='ls -AGFhl --color=auto'                                                                                   # ls:           List all files in current directory
 # alias lsd='lsd -a'                                                                                                  # lsd:          List all files in current directory
 
 ### PROCESS ALIASES
@@ -120,10 +119,23 @@ alias yad='pnpm add -D'                                                         
 alias yr='pnpm rm'                                                                                                   # yr:           Remove dependency from project
 alias yo='pnpm outdated'                                                                                             # yo:           Check for outdated project dependencies
 alias yui='pnpm update -i'                                                                                           # yui:          Upgrade outdated project dependencies interactively
+alias yul='pnpm update --latest'                                                                                     # yul:          Upgrade project dependencies automatically
 alias yb='pnpm run build'                                                                                            # yb:           Runs npm run build script command
 alias yd='pnpm run dev'                                                                                              # yd:           Runs npm run dev script command
 alias ys='pnpm start'                                                                                                # ys:           Runs npm start script command
 alias yrun='pnpm run'                                                                                                # yrun:         Runs npm start script command
+
+
+### SUPABASE ALIASAS
+alias sb='supabase'
+alias sbd='supabase db'
+alias sbdf='supabase db diff --file'
+alias sbdr='supabase db reset'
+alias sbpl='supabase projects list'
+alias sblp='supabase link --project-ref'
+alias sbmn='supabase migration new'
+alias sbgt='supabase gen types typescript --local --schema public > database.types.ts'
+
 
 ### CARGO ALIASES
 alias crun='cargo run'                                                                                              # crun:         Cargo run
